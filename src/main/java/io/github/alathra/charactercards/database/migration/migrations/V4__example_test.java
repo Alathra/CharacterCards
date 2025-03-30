@@ -24,7 +24,7 @@ public class V4__example_test extends BaseJavaMigration {
         // Don't use generated jOOQ results here as they may not exist in future java migrations (jOOQ only generates such from the flyway migration results)
         context
             .alterTable(name("some_list"))
-            .addColumn(field("awdvawv", VARCHAR((32))))
+            .addColumn(field("advawv", VARCHAR((32))))
             .execute();
 
         context

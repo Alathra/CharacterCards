@@ -18,7 +18,7 @@ import java.util.Map;
 public class MigrationHandler {
     // List of Java migrations
     private final List<Class<? extends JavaMigration>> migrations = List.of(
-        V4__example_test.class
+        //V4__example_test.class
     );
 
     private final DataSource dataSource;
