@@ -1,8 +1,24 @@
-# Update Checker Settings
-update-checker:
-  enable: true
-  console: true # Post message to console
-  op: true # Send update notification to opped players on join
+# =========================================
+# |    CharacterCards3 by ShermansWorld   |
+# =========================================
 
-# Translation, specify the language file to use, for example `en-US` which will load `/translations/en-US.yml`
-translation: "en-US"
+CardSettings:
+  # The minimum age a player can make their character
+  minimumAge: 14
+  # The maximum age a player can make their character
+  maximumAge: 120
+  # Defines how long a player's description can be. Default is 512 or 2 full chat messages
+  descriptionCharacterLimit: 512
+  # You can now define as many custom fields as you want ro be added to the character cards. Number them starting with "1:"
+  # To clear all custom fields replace this section with "CustomFields: []"
+  # These custom fields are DEPENDENT on PlaceholderAPI (PAPI). You must have it installed for these placeholders to work!
+  # To get the above placeholder to work run /papi ecloud download vault, /papi reload
+  CustomFields:
+    - label: "<dark_aqua>Balance"
+      placeholder: "<aqua>%vault_eco_balance_formatted"
+
+InteractSettings:
+  # Displays a player's character card when a player shift + right clicks them
+  shiftRightClick: true
+  # Displays a player's character card when a player right clicks them with paper in their hand
+  rightClickPaper: true

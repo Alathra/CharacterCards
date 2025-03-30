@@ -33,11 +33,6 @@ repositories {
     maven("https://maven.athyrium.eu/releases")
 
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/") // PlaceholderAPI
-    maven("https://repo.codemc.org/repository/maven-public/") {
-        content {
-            includeGroup("com.github.retrooper") // PacketEvents
-        }
-    }
     maven("https://jitpack.io/") {
         content {
             includeGroup("com.github.MilkBowl") // VaultAPI
@@ -67,9 +62,7 @@ dependencies {
     }
 
     // Plugin dependencies
-    implementation(libs.bstats)
     compileOnly(libs.vault)
-    compileOnly(libs.packetevents)
     compileOnly(libs.placeholderapi) {
         exclude("me.clip.placeholderapi.libs", "kyori")
     }
@@ -151,11 +144,9 @@ tasks {
         reloc("space.arim.morepaperlib", "morepaperlib")
         reloc("io.github.milkdrinkers.crate", "crate")
         reloc("io.github.milkdrinkers.colorparser", "colorparser")
-        reloc("io.github.milkdrinkers.versionwatch", "versionwatch")
         reloc("dev.jorel.commandapi", "commandapi")
         reloc("dev.triumphteam.gui", "gui")
         reloc("com.zaxxer.hikari", "hikaricp")
-        reloc("org.bstats", "bstats")
 
         mergeServiceFiles {
             setPath("META-INF/services/org.flywaydb.core.extensibility.Plugin") // Fix Flyway overriding its own files
@@ -171,7 +162,7 @@ tasks {
 
     runServer {
         // Configure the Minecraft version for our task.
-        minecraftVersion("1.21")
+        minecraftVersion("1.21.4")
 
         // IntelliJ IDEA debugger setup: https://docs.papermc.io/paper/dev/debugging#using-a-remote-debugger
         jvmArgs("-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005", "-DPaper.IgnoreJavaVersion=true", "-Dcom.mojang.eula.agree=true", "-DIReallyKnowWhatIAmDoingISwear", "-Dpaper.playerconnection.keepalive=6000")
@@ -185,10 +176,7 @@ tasks {
 //            hangar("squaremap", "1.2.0")
 //            url("https://download.luckperms.net/1515/bukkit/loader/LuckPerms-Bukkit-5.4.102.jar")
             github("MilkBowl", "Vault", "1.7.3", "Vault.jar")
-            github("retrooper", "packetevents", "v2.7.0", "packetevents-spigot-2.7.0.jar")
             hangar("PlaceholderAPI", "2.11.6")
-            hangar("ViaVersion", "5.2.1")
-            hangar("ViaBackwards", "5.2.1")
         }
     }
 }
@@ -207,7 +195,7 @@ bukkit { // Options: https://github.com/Minecrell/plugin-yml#bukkit
     prefix = project.name
     version = "${project.version}"
     description = "${project.description}"
-    authors = listOf("GITHUB_USERNAME")
+    authors = listOf("ShermansWorld, Schmeb")
     contributors = listOf()
     apiVersion = "1.21"
     foliaSupported = true // Mark plugin as supporting Folia
