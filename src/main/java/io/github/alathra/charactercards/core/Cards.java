@@ -54,14 +54,16 @@ public class Cards {
 
     public static void displayHelp(Player player) {
         player.sendMessage(ColorParser.of("&8&l&m-----------&r&7[&3CharacterCards &r&7v&b" + CharacterCards.getInstance().getPluginMeta().getVersion().substring(0, 5) + "&7]&8&l&m-----------\n").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3charedit &btitle &7<&bTitle&7> &8- &rSet your character's title").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3charedit &bfirstname &7<&bFirst Name&7> &8- &rSet your character's first name").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3charedit &blastname &7<&bLast Name&7> &8- &rSet your character's last name").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3charedit &bsuffix &7<&bSuffix&7> &8- &rSet your character's suffix").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3charedit &bgender &7<&bGender&7> &8- &rSet your character's gender").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3charedit &bage &7<&b " + Settings.getMinimumAge() + "&7-&b"
+        player.sendMessage(ColorParser.of("&7/&3char edit &btitle &7<&bTitle&7> &8- &rSet your character's title").parseLegacy().build());
+        player.sendMessage(ColorParser.of("&7/&3char edit &bfirstname &7<&bFirst Name&7> &8- &rSet your character's first name").parseLegacy().build());
+        player.sendMessage(ColorParser.of("&7/&3char edit &blastname &7<&bLast Name&7> &8- &rSet your character's last name").parseLegacy().build());
+        player.sendMessage(ColorParser.of("&7/&3char edit &bsuffix &7<&bSuffix&7> &8- &rSet your character's suffix").parseLegacy().build());
+        player.sendMessage(ColorParser.of("&7/&3char edit &bgender &7<&bGender&7> &8- &rSet your character's gender").parseLegacy().build());
+        player.sendMessage(ColorParser.of("&7/&3char edit &bage &7<&b" + Settings.getMinimumAge() + "&7-&b"
             + Settings.getMaximumAge() + "&7> &8- &rSet your character's age.").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3charedit &bdesc &7<&bDescription&7> &8- &rSet your character's description, &c512 CHARACTER LIMIT").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3char view &7{&bPlayer&7} &8- &rView your card, or another player's!").parseLegacy().build());
+        player.sendMessage(ColorParser.of("&7/&3char edit &bdesc &7<&bDescription&7> &8- &rSet your character's description, &c512 CHARACTER LIMIT").parseLegacy().build());
+        player.sendMessage(ColorParser.of("&7/&3char help &8- &rDisplays the plugin commands").parseLegacy().build());
+        player.sendMessage(ColorParser.of("&7/&3char view &7{&bPlayer&7} &8- &rView your card, or another player's").parseLegacy().build());
+        player.sendMessage(ColorParser.of("&7/&3char viewoffline &7{&bPlayer&7} &8- &rViews an offline player's card").parseLegacy().build());
     }
 }

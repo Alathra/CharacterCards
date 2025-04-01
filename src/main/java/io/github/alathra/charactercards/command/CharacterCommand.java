@@ -13,61 +13,78 @@ import org.bukkit.entity.Player;
 public class CharacterCommand {
     @SuppressWarnings("all")
     protected CharacterCommand() {
-        // /char
         new CommandAPICommand("char")
             .withAliases("character")
-            .executesPlayer(((player, commandArguments) -> {
-                Cards.displayHelp(player);
-            }))
-            .register();
+                // /char help
+                .withSubcommand(new CommandAPICommand("help")
+                    .executesPlayer(((player, commandArguments) -> {
+                        Cards.displayHelp(player);
+                    }))
+                )
+                // /char view [player]
+                .withSubcommand(new CommandAPICommand("view")
+                    .withOptionalArguments(new PlayerArgument("target"))
+                    .executesPlayer(((player, commandArguments) -> {
+                            if(commandArguments.get("target") != null) {
+                                Player target = (Player) commandArguments.get("target");
+                                Cards.displayCard(player, target);
+                            }
+                            else {
+                                Cards.displayCard(player, player);
+                            }
+                        }))
+                )
+                // /char viewoffline [offline_player]
+                .withSubcommand(new CommandAPICommand("viewoffline")
+                    .withArguments(new OfflinePlayerArgument("target"))
+                    .executesPlayer(((player, commandArguments) -> {
+                        if(commandArguments.get("target") != null) {
+                            Player target = (Player) commandArguments.get("target");
 
-        new CommandAPICommand("char")
-            .withAliases("character")
-            .withArguments(new StringArgument("view"))
-            .withOptionalArguments(new PlayerArgument("target"))
-            .executesPlayer(((player, commandArguments) -> {
-                if(commandArguments.get("target") != null) {
-                    Player target = (Player) commandArguments.get("target");
-                    Cards.displayCard(player, target);
-                }
-                else {
-                    Cards.displayCard(player, player);
-                }
-            }))
-            .register();
-
-        new CommandAPICommand("charedit")
-            .withAliases("characteredit")
-            .withArguments(new StringArgument("subarg")
-                .replaceSuggestions(ArgumentSuggestions.strings(
-                    "title", "firstname", "lastname", "suffix", "gender", "age", "desc")
-                ))
-            .withOptionalArguments(new GreedyStringArgument("value"))
-            .executesPlayer(((player, commandArguments) -> {
-                if(commandArguments.get("value") != null) {
-                    switch ((String) commandArguments.get("subarg")) {
-                        case "title":
-                            titleHandler((String) commandArguments.get("value"), player);
-                            return;
-                        case "firstname":
-                            firstNameHandler((String) commandArguments.get("value"), player);
-                            return;
-                        case "lastname":
-                            lastNameHandler((String) commandArguments.get("value"), player);
-                            return;
-                        case "suffix":
-                            suffixHandler((String) commandArguments.get("value"), player);
-                            return;
-                        case "gender":
-                            genderHandler((String) commandArguments.get("value"), player);
-                            return;
-                        case "age":
-                            ageHandler(commandArguments.get("value"), player);
-                            return;
-                        case "desc":
-                            descriptionHandler((String) commandArguments.get("value"), player);
+                            //Players who have not yet joined the server will be made a card entry, else load offline player card
+                            Queries.loadPlayerProfile(target);
+                        }
+                        else {
+                            player.sendMessage(ColorParser.of("&cPlayer does not exist.").parseLegacy().build());
+                        }
+                    }))
+                )
+                // /char edit <subarg> <value>
+                .withSubcommand(new CommandAPICommand("edit")
+                    .withArguments(new StringArgument("subarg")
+                    .replaceSuggestions(ArgumentSuggestions.strings(
+                        "title", "firstname", "lastname", "suffix", "gender", "age", "desc")
+                    ))
+                    .withOptionalArguments(new GreedyStringArgument("value"))
+                    .executesPlayer(((player, commandArguments) -> {
+                        if(commandArguments.get("value") != null) {
+                            switch ((String) commandArguments.get("subarg")) {
+                                case "title":
+                                    titleHandler((String) commandArguments.get("value"), player);
+                                    return;
+                                case "firstname":
+                                    firstNameHandler((String) commandArguments.get("value"), player);
+                                    return;
+                                case "lastname":
+                                    lastNameHandler((String) commandArguments.get("value"), player);
+                                    return;
+                                case "suffix":
+                                    suffixHandler((String) commandArguments.get("value"), player);
+                                    return;
+                                case "gender":
+                                    genderHandler((String) commandArguments.get("value"), player);
+                                    return;
+                                case "age":
+                                    ageHandler((String) commandArguments.get("value"), player);
+                                    return;
+                                case "desc":
+                                    descriptionHandler((String) commandArguments.get("value"), player);
                     }
                 }
+            })))
+            // if only using /char
+            .executesPlayer(((player, commandArguments) -> {
+                Cards.displayHelp(player);
             }))
             .register();
     }
@@ -147,16 +164,18 @@ public class CharacterCommand {
         }
     }
 
-    private void ageHandler(Object age, Player player) {
+    private void ageHandler(String age, Player player) {
         int minimumAge = Settings.getMinimumAge();
         int maximumAge = Settings.getMaximumAge();
 
-        if(age instanceof String) {
-            player.sendMessage(ColorParser.of("&cPlease input a number from" + minimumAge + "-" + maximumAge).parseLegacy().build());
+        int inputAge;
+
+        try {
+            inputAge = Integer.parseInt(age);
+        } catch (ClassCastException | NumberFormatException e) {
+            player.sendMessage(ColorParser.of("&cPlease input a number from " + minimumAge + "-" + maximumAge).parseLegacy().build());
             return;
         }
-
-        int inputAge = (Integer) age;
 
         if(inputAge >= minimumAge && inputAge <= maximumAge) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
