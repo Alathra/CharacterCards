@@ -8,6 +8,7 @@ import io.github.alathra.charactercards.core.Cards;
 import io.github.alathra.charactercards.core.PlayerProfile;
 import io.github.alathra.charactercards.database.Queries;
 import io.github.milkdrinkers.colorparser.ColorParser;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 public class CharacterCommand {
@@ -39,10 +40,16 @@ public class CharacterCommand {
                     .withArguments(new OfflinePlayerArgument("target"))
                     .executesPlayer(((player, commandArguments) -> {
                         if(commandArguments.get("target") != null) {
-                            Player target = (Player) commandArguments.get("target");
+                            OfflinePlayer target = (OfflinePlayer) commandArguments.get("target");
 
-                            //Players who have not yet joined the server will be made a card entry, else load offline player card
-                            Queries.loadPlayerProfile(target);
+                            if(target.hasPlayedBefore()) {
+                                Queries.loadOfflinePlayerProfile(target);
+
+                                Cards.displayOfflinePlayerCard(player, target);
+                            }
+                            else {
+                                player.sendMessage(ColorParser.of("&cPlayer has not joined the server.").parseLegacy().build());
+                            }
                         }
                         else {
                             player.sendMessage(ColorParser.of("&cPlayer does not exist.").parseLegacy().build());

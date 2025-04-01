@@ -4,8 +4,12 @@ import io.github.alathra.charactercards.CharacterCards;
 import io.github.alathra.charactercards.config.Settings;
 import io.github.milkdrinkers.colorparser.ColorParser;
 import me.clip.placeholderapi.PlaceholderAPI;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
 public class Cards {
@@ -19,6 +23,53 @@ public class Cards {
         dashDecor.append("-".repeat(Math.max(0, 16 - nameLength)));
 
         player.sendMessage(ColorParser.of("&8&l&m" + dashDecor + "&r&7[&3" + targetPlayer.getName() + "’s Card&7]&8&l&m" + dashDecor).parseLegacy().build());
+        player.sendMessage(ColorParser.of("&3IGN &8- &b" + targetPlayer.getName()).parseLegacy().build());
+
+        StringBuilder name = new StringBuilder();
+
+        if(!targetPlayerProfile.getCharacter_title().isEmpty())
+            name.append(targetPlayerProfile.getCharacter_title()).append(" ");
+
+        if(!targetPlayerProfile.getCharacter_first_name().isEmpty())
+            name.append(targetPlayerProfile.getCharacter_first_name()).append(" ");
+
+        if(!targetPlayerProfile.getCharacter_last_name().isEmpty())
+            name.append(targetPlayerProfile.getCharacter_last_name()).append(" ");
+
+        if(!targetPlayerProfile.getCharacter_suffix().isEmpty())
+            name.append(targetPlayerProfile.getCharacter_suffix()).append(" ");
+
+        player.sendMessage(ColorParser.of("&3Name &8- &b" + name).parseLegacy().build());
+        player.sendMessage(ColorParser.of("&3Gender &8- &b" + targetPlayerProfile.getCharacter_gender()).parseLegacy().build());
+        player.sendMessage(ColorParser.of("&3Age &8- &b" + targetPlayerProfile.getCharacter_age()).parseLegacy().build());
+
+        if(!Settings.getRawCustomFields().isEmpty()) {
+            for (Map.Entry<String, String> entry : Settings.getRawCustomFields().entrySet()) {
+                String fieldLabel = entry.getKey();
+                String fieldPlaceholder = PlaceholderAPI.setPlaceholders(targetPlayer, entry.getValue());
+                player.sendMessage(ColorParser.of(fieldLabel + " &8- " + fieldPlaceholder).parseLegacy().build());
+            }
+        }
+
+        player.sendMessage(ColorParser.of("&8&l&m---------------&r&7[&3Description&7]&8&l&m---------------").parseLegacy().build());
+        player.sendMessage(ColorParser.of("&3Desc &8- &b" + targetPlayerProfile.getCharacter_description()).parseLegacy().build());
+        player.sendMessage(ColorParser.of("&8&l&m---------------------------------------").parseLegacy().build());
+    }
+
+    @SuppressWarnings({"all"})
+    public static void displayOfflinePlayerCard(Player player, OfflinePlayer targetPlayer){
+        PlayerProfile targetPlayerProfile = CharacterCards.playerProfiles.get(targetPlayer.getUniqueId());
+
+        StringBuilder dashDecor = new StringBuilder();
+        int nameLength;
+        nameLength = targetPlayer.getPlayer().getName().length() / 2;
+
+        dashDecor.append("-".repeat(Math.max(0, 16 - nameLength)));
+
+        player.sendMessage(ColorParser.of("&8&l&m" + dashDecor + "&r&7[&3" + targetPlayer.getName() + "’s Card&7]&8&l&m" + dashDecor).parseLegacy().build());
+        player.sendMessage(ColorParser.of("&3Last Online &8- &b" +
+            Instant.ofEpochMilli(targetPlayer.getLastSeen()).atZone(ZoneId.of("America/New_York")).format(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a z"))
+        ).parseLegacy().build());
         player.sendMessage(ColorParser.of("&3IGN &8- &b" + targetPlayer.getName()).parseLegacy().build());
 
         StringBuilder name = new StringBuilder();

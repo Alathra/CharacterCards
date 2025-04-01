@@ -2,6 +2,7 @@ package io.github.alathra.charactercards.database;
 
 import io.github.alathra.charactercards.core.PlayerProfile;
 import io.github.alathra.charactercards.utility.DB;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jooq.DSLContext;
 
@@ -126,6 +127,40 @@ public abstract class Queries {
                 throw new RuntimeException(e);
             }
 
+            return Optional.of(profile);
+        });
+    }
+
+    public static CompletableFuture<Optional<PlayerProfile>> loadOfflinePlayerProfile(OfflinePlayer player) {
+        return CompletableFuture.supplyAsync(() -> {
+            PlayerProfile profile;
+
+            try (Connection con = DB.getConnection()) {
+                DSLContext context = DB.getContext(con);
+
+                Record record = context.select()
+                    .from(CARDS)
+                    .where(CARDS.PLAYER_UUID.eq(UUIDUtil.toBytes(player.getUniqueId())))
+                    .fetchOne();
+
+                if(record == null) {
+                    return Optional.empty();
+                }
+
+                profile = new PlayerProfile(
+                    QueryUtils.UUIDUtil.fromBytes(record.get(CARDS.PLAYER_UUID)),
+                    record.get(CARDS.PLAYER_NAME),
+                    record.get(CARDS.CHARACTER_TITLE),
+                    record.get(CARDS.CHARACTER_FIRST_NAME),
+                    record.get(CARDS.CHARACTER_LAST_NAME),
+                    record.get(CARDS.CHARACTER_SUFFIX),
+                    record.get(CARDS.CHARACTER_GENDER),
+                    record.get(CARDS.CHARACTER_AGE),
+                    record.get(CARDS.CHARACTER_DESCRIPTION)
+                );
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
             return Optional.of(profile);
         });
     }
