@@ -1,5 +1,6 @@
 package io.github.alathra.charactercards;
 
+import io.github.alathra.charactercards.core.PlayerProfile;
 import io.github.alathra.charactercards.database.handler.DatabaseHandler;
 import io.github.alathra.charactercards.hook.HookManager;
 import io.github.milkdrinkers.colorparser.ColorParser;
@@ -14,10 +15,15 @@ import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @SuppressWarnings({"FieldCanBeLocal", "unused"})
 public class CharacterCards extends JavaPlugin {
+    public static Map<UUID, PlayerProfile> playerProfiles = new HashMap<>();
+
     private static CharacterCards instance;
 
     // Handlers/Managers

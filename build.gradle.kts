@@ -177,6 +177,7 @@ tasks {
 //            url("https://download.luckperms.net/1515/bukkit/loader/LuckPerms-Bukkit-5.4.102.jar")
             github("MilkBowl", "Vault", "1.7.3", "Vault.jar")
             hangar("PlaceholderAPI", "2.11.6")
+            url("https://ci.ender.zone/job/EssentialsX/lastSuccessfulBuild/artifact/jars/EssentialsX-2.21.1-dev+11-2bb4438.jar")
         }
     }
 }

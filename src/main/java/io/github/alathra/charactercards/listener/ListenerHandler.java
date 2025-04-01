@@ -30,7 +30,7 @@ public class ListenerHandler implements Reloadable {
     @Override
     public void onEnable(CharacterCards plugin) {
         listeners.clear(); // Clear the list to avoid duplicate listeners when reloading the plugin
-//        listeners.add(new ExampleListener());
+        listeners.add(new PlayerListeners());
 
         // Register listeners here
         for (Listener listener : listeners) {
