@@ -3,14 +3,30 @@
 # =========================================
 
 CardSettings:
-  # The minimum age a player can make their character
+  # Defines how long a player's character title can be.
+  titleMaxLength: 12
+
+  # Defines how long a player's character first name can be.
+  firstNameMaxLength: 12
+
+  # Defines how long a player's character last name can be.
+  lastNameMaxLength: 12
+
+  # Defines how long a player's character suffix can be.
+  suffixMaxLength: 6
+
+  # Defines how long a player's character gender can be.
+  genderMaxLength: 18
+
+  # The minimum age a player's character can make their character
   minimumAge: 14
 
-  # The maximum age a player can make their character
+  # The maximum age a player's character can make their character
   maximumAge: 120
 
-  # Defines how long a player's description can be. Default is 512 or 2 full chat messages
+  # Defines how long a player's character description can be. Default is 512 or 2 full chat messages
   descriptionCharacterLimit: 512
+
 
   # You can now define as many custom fields as you want ro be added to the character cards. Number them starting with "1:"
   # To clear all custom fields replace this section with "CustomFields: []"
@@ -24,5 +40,6 @@ CardSettings:
 InteractSettings:
   # Displays a player's character card when a player shift + right clicks them
   shiftRightClick: true
+
   # Displays a player's character card when a player right clicks them with paper in their hand
   rightClickPaper: true

@@ -72,10 +72,8 @@ public class CharacterCommand {
             .register();
     }
 
-    // remember to add exception handling if save is not successful
     private void titleHandler(String title, Player player) {
-        // to add into config
-        int titleMaxLength = 13;
+        int titleMaxLength = Settings.getTitleMaxLength();
 
         if(title.length() <= titleMaxLength) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
@@ -89,10 +87,8 @@ public class CharacterCommand {
         }
     }
 
-    // remember to add exception handling if save is not successful
     private void firstNameHandler(String firstname, Player player) {
-        // to add into config
-        int firstNameMaxLength = 15;
+        int firstNameMaxLength = Settings.getFirstNameMaxLength();
 
         if(firstname.length() <= firstNameMaxLength) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
@@ -106,10 +102,8 @@ public class CharacterCommand {
         }
     }
 
-    // remember to add exception handling if save is not successful
     private void lastNameHandler(String lastname, Player player) {
-        // to add into config
-        int lastNameMaxLength = 10;
+        int lastNameMaxLength = Settings.getLastNameMaxLength();
 
         if(lastname.length() <= lastNameMaxLength) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
@@ -124,8 +118,7 @@ public class CharacterCommand {
     }
 
     private void suffixHandler(String suffix, Player player) {
-        // to add into config
-        int suffixMaxLength = 5;
+        int suffixMaxLength = Settings.getSuffixMaxLength();
 
         if(suffix.length() <= suffixMaxLength) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
@@ -140,8 +133,7 @@ public class CharacterCommand {
     }
 
     private void genderHandler(String gender, Player player) {
-        // to add into config
-        int genderMaxLength = 15;
+        int genderMaxLength = Settings.getGenderMaxLength();
 
         if(gender.length() <= genderMaxLength) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());

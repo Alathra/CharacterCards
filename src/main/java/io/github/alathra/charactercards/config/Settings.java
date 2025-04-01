@@ -7,6 +7,26 @@ import java.util.Map;
 
 public class Settings {
 
+    public static int getTitleMaxLength() {
+        return Cfg.get().getOrDefault("CardSettings.titleMaxLength", 12);
+    }
+
+    public static int getFirstNameMaxLength() {
+        return Cfg.get().getOrDefault("CardSettings.firstNameMaxLength", 12);
+    }
+
+    public static int getLastNameMaxLength() {
+        return Cfg.get().getOrDefault("CardSettings.lastNameMaxLength", 12);
+    }
+
+    public static int getSuffixMaxLength() {
+        return Cfg.get().getOrDefault("CardSettings.suffixMaxLength", 6);
+    }
+
+    public static int getGenderMaxLength() {
+        return Cfg.get().getOrDefault("CardSettings.genderMaxLength", 18);
+    }
+
     public static int getMinimumAge() {
         return Cfg.get().getOrDefault("CardSettings.minimumAge", 14);
     }
