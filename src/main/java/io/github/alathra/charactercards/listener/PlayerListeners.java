@@ -13,22 +13,18 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+@SuppressWarnings({"unused"})
 public class PlayerListeners implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
         Queries.loadPlayerProfile(player).thenAccept(data -> {
-            PlayerProfile profile;
-            profile = data.get();
+            if(data.isPresent()) {
+                PlayerProfile profile = data.get();
 
-            try{
-                // If players change names, it will reflect here
-                profile.setPlayer_name(player.getName());
-
+                profile.setPlayer_name(player.getName()); //This is for players who changed their name
                 CharacterCards.playerProfiles.put(player.getUniqueId(), profile);
-            } catch (Exception e) {
-                throw new RuntimeException(e);
             }
         });
     }

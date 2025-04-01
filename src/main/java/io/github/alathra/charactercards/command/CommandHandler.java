@@ -8,6 +8,7 @@ import io.github.alathra.charactercards.Reloadable;
 /**
  * A class to handle registration of commands.
  */
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class CommandHandler implements Reloadable {
     private final CharacterCards plugin;
 

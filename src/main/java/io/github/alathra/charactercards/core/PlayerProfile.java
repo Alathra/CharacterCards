@@ -3,7 +3,7 @@ package io.github.alathra.charactercards.core;
 import java.util.UUID;
 
 public class PlayerProfile implements Cloneable{
-    private UUID player_uuid;
+    private final UUID player_uuid;
     private String player_name;
     private String character_title;
     private String character_first_name;
@@ -69,10 +69,6 @@ public class PlayerProfile implements Cloneable{
 
     public UUID getPlayer_uuid() {
         return player_uuid;
-    }
-
-    public void setPlayer_uuid(UUID player_uuid) {
-        this.player_uuid = player_uuid;
     }
 
     public String getCharacter_title() {

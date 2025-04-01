@@ -11,6 +11,7 @@ import io.github.milkdrinkers.colorparser.ColorParser;
 import org.bukkit.entity.Player;
 
 public class CharacterCommand {
+    @SuppressWarnings("all")
     protected CharacterCommand() {
         // /char
         new CommandAPICommand("char")

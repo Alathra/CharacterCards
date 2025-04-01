@@ -8,6 +8,7 @@ import org.bukkit.command.CommandSender;
 /**
  * Class containing the code for the example command.
  */
+@SuppressWarnings({"unused"})
 class ExampleCommand {
     private static final String BASE_PERM = "example.command";
 
