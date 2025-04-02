@@ -20,10 +20,10 @@ public class Cards {
         int nameLength;
         nameLength = targetPlayer.getName().length() / 2;
 
-        dashDecor.append("-".repeat(Math.max(0, 16 - nameLength)));
+        dashDecor.append("=".repeat(Math.max(0, 15 - nameLength)));
 
-        player.sendMessage(ColorParser.of("&8&l&m" + dashDecor + "&r&7[&3" + targetPlayer.getName() + "’s Card&7]&8&l&m" + dashDecor).parseLegacy().build());
-        player.sendMessage(ColorParser.of("&3IGN &8- &b" + targetPlayer.getName()).parseLegacy().build());
+        player.sendMessage(ColorParser.of("<dark_gray>╔<b>" + dashDecor + "</b></dark_gray><gray>[<dark_aqua>" + targetPlayer.getName() + "’s Card</dark_aqua><gray>]<dark_gray><b>" + dashDecor + "</b>╗").build());
+        player.sendMessage(ColorParser.of("<dark_aqua>   IGN <dark_gray>≫ <aqua>" + targetPlayer.getName()).build());
 
         StringBuilder name = new StringBuilder();
 
@@ -39,21 +39,21 @@ public class Cards {
         if(!targetPlayerProfile.getCharacter_suffix().isEmpty())
             name.append(targetPlayerProfile.getCharacter_suffix()).append(" ");
 
-        player.sendMessage(ColorParser.of("&3Name &8- &b" + name).parseLegacy().build());
-        player.sendMessage(ColorParser.of("&3Gender &8- &b" + targetPlayerProfile.getCharacter_gender()).parseLegacy().build());
-        player.sendMessage(ColorParser.of("&3Age &8- &b" + targetPlayerProfile.getCharacter_age()).parseLegacy().build());
+        player.sendMessage(ColorParser.of("<dark_aqua>   Name <dark_gray>≫ <aqua>" + name).build());
+        player.sendMessage(ColorParser.of("<dark_aqua>   Gender <dark_gray>≫ <aqua>" + targetPlayerProfile.getCharacter_gender()).build());
+        player.sendMessage(ColorParser.of("<dark_aqua>   Age <dark_gray>≫ <aqua>" + targetPlayerProfile.getCharacter_age()).build());
 
         if(!Settings.getRawCustomFields().isEmpty()) {
             for (Map.Entry<String, String> entry : Settings.getRawCustomFields().entrySet()) {
                 String fieldLabel = entry.getKey();
                 String fieldPlaceholder = PlaceholderAPI.setPlaceholders(targetPlayer, entry.getValue());
-                player.sendMessage(ColorParser.of(fieldLabel + " &8- " + fieldPlaceholder).parseLegacy().build());
+                player.sendMessage(ColorParser.of("<dark_aqua>   " + fieldLabel + " <dark_gray>≫ <aqua>" + fieldPlaceholder).build());
             }
         }
 
-        player.sendMessage(ColorParser.of("&8&l&m---------------&r&7[&3Description&7]&8&l&m---------------").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&3Desc &8- &b" + targetPlayerProfile.getCharacter_description()).parseLegacy().build());
-        player.sendMessage(ColorParser.of("&8&l&m---------------------------------------").parseLegacy().build());
+        player.sendMessage(ColorParser.of("<dark_gray><b> <st>==============</st></b><gray>[<dark_aqua>Description<gray>]<b><dark_gray><st>==============").build());
+        player.sendMessage(ColorParser.of("<aqua> " + targetPlayerProfile.getCharacter_description()).build());
+        player.sendMessage(ColorParser.of("<dark_gray>╚<b>===============</b><dark_aqua>≪ °❈° ≫<dark_gray><b>================</b>╝").build());
     }
 
     @SuppressWarnings({"all"})
@@ -64,13 +64,13 @@ public class Cards {
         int nameLength;
         nameLength = targetPlayer.getPlayer().getName().length() / 2;
 
-        dashDecor.append("-".repeat(Math.max(0, 16 - nameLength)));
+        dashDecor.append("=".repeat(Math.max(0, 15 - nameLength)));
 
-        player.sendMessage(ColorParser.of("&8&l&m" + dashDecor + "&r&7[&3" + targetPlayer.getName() + "’s Card&7]&8&l&m" + dashDecor).parseLegacy().build());
-        player.sendMessage(ColorParser.of("&3Last Online &8- &b" +
+        player.sendMessage(ColorParser.of("<dark_gray>╔<b>" + dashDecor + "</b></dark_gray><gray>[<dark_aqua>" + targetPlayer.getName() + "’s Card</dark_aqua><gray>]<dark_gray><b>" + dashDecor + "</b>╗").build());
+        player.sendMessage(ColorParser.of("<dark_aqua>   Last Online <dark_gray>≫ <aqua>" +
             Instant.ofEpochMilli(targetPlayer.getLastSeen()).atZone(ZoneId.of("America/New_York")).format(DateTimeFormatter.ofPattern("MM/dd/yyyy hh:mm:ss a z"))
-        ).parseLegacy().build());
-        player.sendMessage(ColorParser.of("&3IGN &8- &b" + targetPlayer.getName()).parseLegacy().build());
+        ).build());
+        player.sendMessage(ColorParser.of("<dark_aqua>   IGN <dark_gray>≫ <aqua>" + targetPlayer.getName()).build());
 
         StringBuilder name = new StringBuilder();
 
@@ -86,35 +86,37 @@ public class Cards {
         if(!targetPlayerProfile.getCharacter_suffix().isEmpty())
             name.append(targetPlayerProfile.getCharacter_suffix()).append(" ");
 
-        player.sendMessage(ColorParser.of("&3Name &8- &b" + name).parseLegacy().build());
-        player.sendMessage(ColorParser.of("&3Gender &8- &b" + targetPlayerProfile.getCharacter_gender()).parseLegacy().build());
-        player.sendMessage(ColorParser.of("&3Age &8- &b" + targetPlayerProfile.getCharacter_age()).parseLegacy().build());
+        player.sendMessage(ColorParser.of("<dark_aqua>   Name <dark_gray>≫ <aqua>" + name).build());
+        player.sendMessage(ColorParser.of("<dark_aqua>   Gender <dark_gray>≫ <aqua>" + targetPlayerProfile.getCharacter_gender()).build());
+        player.sendMessage(ColorParser.of("<dark_aqua>   Age <dark_gray>≫ <aqua>" + targetPlayerProfile.getCharacter_age()).build());
 
         if(!Settings.getRawCustomFields().isEmpty()) {
             for (Map.Entry<String, String> entry : Settings.getRawCustomFields().entrySet()) {
                 String fieldLabel = entry.getKey();
                 String fieldPlaceholder = PlaceholderAPI.setPlaceholders(targetPlayer, entry.getValue());
-                player.sendMessage(ColorParser.of(fieldLabel + " &8- " + fieldPlaceholder).parseLegacy().build());
+                player.sendMessage(ColorParser.of("<dark_aqua>   " + fieldLabel + " <dark_gray>≫ <aqua>" + fieldPlaceholder).build());
             }
         }
 
-        player.sendMessage(ColorParser.of("&8&l&m---------------&r&7[&3Description&7]&8&l&m---------------").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&3Desc &8- &b" + targetPlayerProfile.getCharacter_description()).parseLegacy().build());
-        player.sendMessage(ColorParser.of("&8&l&m---------------------------------------").parseLegacy().build());
+        player.sendMessage(ColorParser.of("<dark_gray><b> <st>==============</st></b><gray>[<dark_aqua>Description<gray>]<b><dark_gray><st>==============").build());
+        player.sendMessage(ColorParser.of("<aqua> " + targetPlayerProfile.getCharacter_description()).build());
+        player.sendMessage(ColorParser.of("<dark_gray>╚<b>===============</b><dark_aqua>≪ °❈° ≫<dark_gray><b>================</b>╝").build());
     }
 
     public static void displayHelp(Player player) {
-        player.sendMessage(ColorParser.of("&8&l&m-----------&r&7[&3CharacterCards &r&7v&b" + CharacterCards.getInstance().getPluginMeta().getVersion().substring(0, 5) + "&7]&8&l&m-----------\n").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3char edit &btitle &7<&bTitle&7> &8- &rSet your character's title").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3char edit &bfirstname &7<&bFirst Name&7> &8- &rSet your character's first name").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3char edit &blastname &7<&bLast Name&7> &8- &rSet your character's last name").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3char edit &bsuffix &7<&bSuffix&7> &8- &rSet your character's suffix").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3char edit &bgender &7<&bGender&7> &8- &rSet your character's gender").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3char edit &bage &7<&b" + Settings.getMinimumAge() + "&7-&b"
-            + Settings.getMaximumAge() + "&7> &8- &rSet your character's age.").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3char edit &bdesc &7<&bDescription&7> &8- &rSet your character's description, &c512 CHARACTER LIMIT").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3char help &8- &rDisplays the plugin commands").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3char view &7{&bPlayer&7} &8- &rView your card, or another player's").parseLegacy().build());
-        player.sendMessage(ColorParser.of("&7/&3char viewoffline &7{&bPlayer&7} &8- &rViews an offline player's card").parseLegacy().build());
+        player.sendMessage(ColorParser.of("<dark_gray>╔<b><st>===========================================</st></b>╗").build());
+        player.sendMessage(ColorParser.of("                         <dark_aqua>CharacterCards <aqua><b>" + CharacterCards.getInstance().getPluginMeta().getVersion().substring(0, 5)).build());
+        player.sendMessage(ColorParser.of("<dark_gray>╚<b><st>===========================================</st></b>╝").build());
+        player.sendMessage(ColorParser.of("  <gray>/<dark_aqua>char edit <aqua>title <gray><<aqua>Title<gray>> <dark_gray>- <white>Set your character's title").build());
+        player.sendMessage(ColorParser.of("  <gray>/<dark_aqua>char edit <aqua>firstname <gray><<aqua>First Name<gray>> <dark_gray>- <white>Set your character's first name").build());
+        player.sendMessage(ColorParser.of("  <gray>/<dark_aqua>char edit <aqua>lastname <gray><<aqua>Last Name<gray>> <dark_gray>- <white>Set your character's last name").build());
+        player.sendMessage(ColorParser.of("  <gray>/<dark_aqua>char edit <aqua>suffix <gray><<aqua>Suffix<gray>> <dark_gray>- <white>Set your character's suffix").build());
+        player.sendMessage(ColorParser.of("  <gray>/<dark_aqua>char edit <aqua>gender <gray><<aqua>Gender<gray>> <dark_gray>- <white>Set your character's gender").build());
+        player.sendMessage(ColorParser.of("  <gray>/<dark_aqua>char edit <aqua>age <gray><<aqua>" + Settings.getMinimumAge() + "<gray>-<aqua>"
+            + Settings.getMaximumAge() + "<gray>> <dark_gray>- <white>Set your character's age.").build());
+        player.sendMessage(ColorParser.of("  <gray>/<dark_aqua>char edit <aqua>desc <gray><<aqua>Description<gray>> <dark_gray>- <white>Set your character's description, <red><b>512 CHARACTER LIMIT").build());
+        player.sendMessage(ColorParser.of("  <gray>/<dark_aqua>char help <dark_gray>- <white>Displays the plugin commands").build());
+        player.sendMessage(ColorParser.of("  <gray>/<dark_aqua>char view <gray>{<aqua>Player<gray>} <dark_gray>- <white>View your card, or another player's").build());
+        player.sendMessage(ColorParser.of("  <gray>/<dark_aqua>char viewoffline <gray>{<aqua>Player<gray>} <dark_gray>- <white>Views an offline player's card").build());
     }
 }

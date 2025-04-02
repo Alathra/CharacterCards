@@ -48,11 +48,11 @@ public class CharacterCommand {
                                 Cards.displayOfflinePlayerCard(player, target);
                             }
                             else {
-                                player.sendMessage(ColorParser.of("&cPlayer has not joined the server.").parseLegacy().build());
+                                player.sendMessage(ColorParser.of("<red>[<b>✖</b>] <red>Player <white><b>" + target.getName() + " </b><red>has not joined the server.").build());
                             }
                         }
                         else {
-                            player.sendMessage(ColorParser.of("&cPlayer does not exist.").parseLegacy().build());
+                            player.sendMessage(ColorParser.of("<red>[<b>✖</b>] <red>Player has not joined the server.").build());
                         }
                     }))
                 )
@@ -104,10 +104,10 @@ public class CharacterCommand {
 
             profile.setCharacter_title(title);
             Queries.savePlayerProfile(profile);
-            player.sendMessage(ColorParser.of("Character card saved successfully").parseLegacy().build());
+            player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
         }
         else {
-            player.sendMessage(ColorParser.of("&cTitle is too long, limited to " + titleMaxLength + " characters only").parseLegacy().build());
+            player.sendMessage(ColorParser.of("<red>[<b>✖</b>] Title is too long, limited to <dark_red><b>" + titleMaxLength + " </b><red>characters only").build());
         }
     }
 
@@ -119,10 +119,10 @@ public class CharacterCommand {
 
             profile.setCharacter_first_name(firstname);
             Queries.savePlayerProfile(profile);
-            player.sendMessage(ColorParser.of("Character card saved successfully").parseLegacy().build());
+            player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
         }
         else {
-            player.sendMessage(ColorParser.of("&cFirst Name is too long, limited to " + firstNameMaxLength + " characters only").parseLegacy().build());
+            player.sendMessage(ColorParser.of("<dark_gray>[<b><red>✖</b><dark_gray>]<red> First Name is too long, limited to <dark_red><b>" + firstNameMaxLength + " </b><red>characters only").build());
         }
     }
 
@@ -134,10 +134,10 @@ public class CharacterCommand {
 
             profile.setCharacter_last_name(lastname);
             Queries.savePlayerProfile(profile);
-            player.sendMessage(ColorParser.of("Character card saved successfully").parseLegacy().build());
+            player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
         }
         else {
-            player.sendMessage(ColorParser.of("&cLast Name is too long, limited to " + lastNameMaxLength + " characters only").parseLegacy().build());
+            player.sendMessage(ColorParser.of("<dark_gray>[<b><red>✖</b><dark_gray>]<red> Last Name is too long, limited to <dark_red><b>" + lastNameMaxLength + " </b><red>characters only").build());
         }
     }
 
@@ -149,10 +149,10 @@ public class CharacterCommand {
 
             profile.setCharacter_suffix(suffix);
             Queries.savePlayerProfile(profile);
-            player.sendMessage(ColorParser.of("Character card saved successfully").parseLegacy().build());
+            player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
         }
         else {
-            player.sendMessage(ColorParser.of("&cSuffix is too long, limited to " + suffixMaxLength + " characters only").parseLegacy().build());
+            player.sendMessage(ColorParser.of("<dark_gray>[<b><red>✖</b><dark_gray>]<red> Suffix is too long, limited to <dark_red><b>" + suffixMaxLength + " </b><red>characters only").parseLegacy().build());
         }
     }
 
@@ -164,10 +164,10 @@ public class CharacterCommand {
 
             profile.setCharacter_gender(gender);
             Queries.savePlayerProfile(profile);
-            player.sendMessage(ColorParser.of("Character card saved successfully").parseLegacy().build());
+            player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
         }
         else {
-            player.sendMessage(ColorParser.of("&cGender input is too long, limited to " + genderMaxLength + " characters only").parseLegacy().build());
+            player.sendMessage(ColorParser.of("<dark_gray>[<b><red>✖</b><dark_gray>]<red> Gender input is too long, limited to <dark_red><b>" + genderMaxLength + " </b><red>characters only").parseLegacy().build());
         }
     }
 
@@ -180,7 +180,7 @@ public class CharacterCommand {
         try {
             inputAge = Integer.parseInt(age);
         } catch (ClassCastException | NumberFormatException e) {
-            player.sendMessage(ColorParser.of("&cPlease input a number from " + minimumAge + "-" + maximumAge).parseLegacy().build());
+            player.sendMessage(ColorParser.of("<dark_gray>[<b><red>✖</b><dark_gray>]<red> Please input a number from <dark_red><b>" + minimumAge + "-" + maximumAge).parseLegacy().build());
             return;
         }
 
@@ -189,10 +189,10 @@ public class CharacterCommand {
 
             profile.setCharacter_age(inputAge);
             Queries.savePlayerProfile(profile);
-            player.sendMessage(ColorParser.of("Character card saved successfully").parseLegacy().build());
+            player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
         }
         else {
-            player.sendMessage(ColorParser.of("&cAge number too small/large, limited to a range of " + minimumAge + "-" + maximumAge).parseLegacy().build());
+            player.sendMessage(ColorParser.of("<dark_gray>[<b><red>✖</b><dark_gray>]<red> Age number too small/large, limited to a range of <dark_red><b>" + minimumAge + "-" + maximumAge).parseLegacy().build());
         }
     }
 
@@ -204,10 +204,10 @@ public class CharacterCommand {
 
             profile.setCharacter_description(desc);
             Queries.savePlayerProfile(profile);
-            player.sendMessage(ColorParser.of("Character card saved successfully").parseLegacy().build());
+            player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
         }
         else {
-            player.sendMessage(ColorParser.of("&cDescription too long, limited to "  + descriptionCharacterLimit + " characters only").parseLegacy().build());
+            player.sendMessage(ColorParser.of("<dark_gray>[<b><red>✖</b><dark_gray>]<red> Description too long, limited to <dark_red><b>"  + descriptionCharacterLimit + " </b><red>characters only").parseLegacy().build());
         }
     }
 }
