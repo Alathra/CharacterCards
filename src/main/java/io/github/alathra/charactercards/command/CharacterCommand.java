@@ -103,7 +103,7 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacter_title(title);
-            Queries.savePlayerProfile(profile);
+            Queries.savePlayerProfile(profile, "TITLE");
             player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
         }
         else {
@@ -118,7 +118,7 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacter_first_name(firstname);
-            Queries.savePlayerProfile(profile);
+            Queries.savePlayerProfile(profile , "FIRST_NAME");
             player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
         }
         else {
@@ -133,7 +133,7 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacter_last_name(lastname);
-            Queries.savePlayerProfile(profile);
+            Queries.savePlayerProfile(profile, "LAST_NAME");
             player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
         }
         else {
@@ -148,7 +148,7 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacter_suffix(suffix);
-            Queries.savePlayerProfile(profile);
+            Queries.savePlayerProfile(profile, "SUFFIX");
             player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
         }
         else {
@@ -163,7 +163,7 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacter_gender(gender);
-            Queries.savePlayerProfile(profile);
+            Queries.savePlayerProfile(profile, "GENDER");
             player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
         }
         else {
@@ -188,7 +188,7 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacter_age(inputAge);
-            Queries.savePlayerProfile(profile);
+            Queries.savePlayerProfile(profile, "AGE");
             player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
         }
         else {
@@ -203,7 +203,7 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacter_description(desc);
-            Queries.savePlayerProfile(profile);
+            Queries.savePlayerProfile(profile, "DESCRIPTION");
             player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
         }
         else {
