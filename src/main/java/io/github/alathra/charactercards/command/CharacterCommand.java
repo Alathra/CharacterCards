@@ -16,6 +16,8 @@ public class CharacterCommand {
     protected CharacterCommand() {
         new CommandAPICommand("char")
             .withAliases("character")
+                // /char translation
+                .withSubcommand(new TranslationCommand().command())
                 // /char help
                 .withSubcommand(new CommandAPICommand("help")
                     .executesPlayer(((player, commandArguments) -> {

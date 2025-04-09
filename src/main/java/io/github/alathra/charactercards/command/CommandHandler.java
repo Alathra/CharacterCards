@@ -38,6 +38,7 @@ public class CommandHandler implements Reloadable {
 
         // Register commands here
         new CharacterCommand();
+        new TranslationCommand();
     }
 
     @Override

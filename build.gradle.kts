@@ -60,6 +60,7 @@ dependencies {
     implementation(libs.triumph.gui) {
         exclude("net.kyori")
     }
+    implementation(libs.wordweaver)
 
     // Plugin dependencies
     compileOnly(libs.vault)
@@ -141,6 +142,7 @@ tasks {
         // Shadow classes
         fun reloc(originPkg: String, targetPkg: String) = relocate(originPkg, "${mainPackage}.lib.${targetPkg}")
 
+        reloc("io.github.milkdrinkers.wordweaver", "wordweaver")
         reloc("space.arim.morepaperlib", "morepaperlib")
         reloc("io.github.milkdrinkers.crate", "crate")
         reloc("io.github.milkdrinkers.colorparser", "colorparser")
@@ -177,7 +179,7 @@ tasks {
 //            url("https://download.luckperms.net/1515/bukkit/loader/LuckPerms-Bukkit-5.4.102.jar")
             github("MilkBowl", "Vault", "1.7.3", "Vault.jar")
             hangar("PlaceholderAPI", "2.11.6")
-            url("https://ci.ender.zone/job/EssentialsX/lastSuccessfulBuild/artifact/jars/EssentialsX-2.21.1-dev+11-2bb4438.jar")
+//            url("https://ci.ender.zone/job/EssentialsX/lastSuccessfulBuild/artifact/jars/EssentialsX-2.21.1-dev+12-8455212.jar")
         }
     }
 }

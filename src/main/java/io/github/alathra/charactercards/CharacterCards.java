@@ -3,6 +3,7 @@ package io.github.alathra.charactercards;
 import io.github.alathra.charactercards.core.PlayerProfile;
 import io.github.alathra.charactercards.database.handler.DatabaseHandler;
 import io.github.alathra.charactercards.hook.HookManager;
+import io.github.alathra.charactercards.translation.TranslationHandler;
 import io.github.milkdrinkers.colorparser.ColorParser;
 import io.github.alathra.charactercards.command.CommandHandler;
 import io.github.alathra.charactercards.config.ConfigHandler;
@@ -30,6 +31,7 @@ public class CharacterCards extends JavaPlugin {
     private ConfigHandler configHandler;
     private DatabaseHandler databaseHandler;
     private HookManager hookManager;
+    private TranslationHandler translationHandler;
     private CommandHandler commandHandler;
     private ListenerHandler listenerHandler;
 
@@ -50,6 +52,7 @@ public class CharacterCards extends JavaPlugin {
         instance = this;
 
         configHandler = new ConfigHandler(this);
+        translationHandler = new TranslationHandler(configHandler);
         databaseHandler = new DatabaseHandlerBuilder()
             .withConfigHandler(configHandler)
             .withLogger(getComponentLogger())
@@ -60,6 +63,7 @@ public class CharacterCards extends JavaPlugin {
 
         handlers = List.of(
             configHandler,
+            translationHandler,
             databaseHandler,
             hookManager,
             commandHandler,
