@@ -1,0 +1,29 @@
+{
+  "commands": {
+    "translation": {
+      "help": "\n<white>Translations subcommands:\n  <dark_gray>• <white>reload: <gray><i>Reloads the translation files.\n  <dark_gray>• <white>test <node>: <gray><i>Test a translation.\n",
+      "reloaded": "<green>Successfully reloaded translations!"
+    }
+  },
+  "cards": {
+    "player": {
+      "ign": "IGN",
+      "name": "Name",
+      "gender": "Gender",
+      "age": "Description",
+      "lastonline": "Last Online"
+    },
+    "help": {
+      "title": "Set your character's title",
+      "firstname": "Set your character's first name",
+      "lastname": "Set your character's last name",
+      "suffix": "Set your character's suffix",
+      "gender": "Set your character's gender.",
+      "age": "Set your character's age.",
+      "desc": "Set your character's description, <red><b>512 CHARACTER LIMIT",
+      "help": "Displays the plugin commands",
+      "view": "View your card, or another player's",
+      "viewoffline": "Views an offline player's card"
+    }
+  }
+}
