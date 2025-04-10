@@ -49,12 +49,15 @@ dependencies {
     implementation(libs.morepaperlib)
 
     // API
-    implementation(libs.version.watch)
+    implementation(libs.javasemver) // Required by VersionWatch
+    implementation(libs.versionwatch)
+    implementation(libs.wordweaver)
     implementation(libs.crate.api)
     implementation(libs.crate.yaml)
     implementation(libs.colorparser) {
         exclude("net.kyori")
     }
+    implementation(libs.threadutil.bukkit)
     implementation(libs.commandapi.shade)
     //annotationProcessor(libs.commandapi.annotations) // Uncomment if you want to use command annotations
     implementation(libs.triumph.gui) {
@@ -71,6 +74,7 @@ dependencies {
     // Database dependencies - Core
     implementation(libs.hikaricp)
     library(libs.bundles.flyway)
+    compileOnly(libs.jakarta) // Compiler bug, see: https://github.com/jOOQ/jOOQ/issues/14865#issuecomment-2077182512
     library(libs.jooq)
     jooqCodegen(libs.h2)
 
@@ -143,9 +147,12 @@ tasks {
         fun reloc(originPkg: String, targetPkg: String) = relocate(originPkg, "${mainPackage}.lib.${targetPkg}")
 
         reloc("io.github.milkdrinkers.wordweaver", "wordweaver")
+        reloc("io.github.milkdrinkers.javasemver", "javasemver")
+        reloc("io.github.milkdrinkers.versionwatch", "versionwatch")
         reloc("space.arim.morepaperlib", "morepaperlib")
         reloc("io.github.milkdrinkers.crate", "crate")
         reloc("io.github.milkdrinkers.colorparser", "colorparser")
+        reloc("io.github.milkdrinkers.threadutil", "threadutil")
         reloc("dev.jorel.commandapi", "commandapi")
         reloc("dev.triumphteam.gui", "gui")
         reloc("com.zaxxer.hikari", "hikaricp")

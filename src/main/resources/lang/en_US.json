@@ -24,6 +24,21 @@
       "help": "Displays the plugin commands",
       "view": "View your card, or another player's",
       "viewoffline": "Views an offline player's card"
+    },
+    "error": {
+      "viewoffline_hasnotjoined": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Player has not joined the server.",
+      "viewoffline_playernotexist": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Player does not exist.",
+      "card_savesuccess": "<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully",
+      "card_savefail": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Character card failed to save",
+      "card_loadfail": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Character card failed to load",
+      "title": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Title is too long, limited to <dark_red><b>%max_length%</b><red> characters only",
+      "firstname": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> First Name is too long, limited to <dark_red><b>%max_length%</b><red> characters only",
+      "lastname": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Last Name is too long, limited to <dark_red><b>%max_length%</b><red> characters only",
+      "suffix": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Suffix is too long, limited to <dark_red><b>%max_length%</b><red> characters only",
+      "gender": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Gender input is too long, limited to <dark_red><b>%max_length%</b><red> characters only",
+      "age_notanumber": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Please input a number from <dark_red><b>%minimum_age%-%maximum_age%",
+      "age": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Age number too low/high, limited to a range of <dark_red><b>%minimum_age%-%maximum_age%",
+      "desc": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Description too long, limited to <dark_red><b>%max_length%</b><red> characters only"
     }
   }
 }

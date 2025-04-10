@@ -2,6 +2,8 @@ package io.github.alathra.charactercards.database;
 
 import io.github.alathra.charactercards.core.PlayerProfile;
 import io.github.alathra.charactercards.utility.DB;
+import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.wordweaver.Translation;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.jooq.DSLContext;
@@ -11,6 +13,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 import org.jooq.Record;
+import org.jooq.exception.DataAccessException;
 
 import static io.github.alathra.charactercards.database.schema.Tables.*;
 import static io.github.alathra.charactercards.database.QueryUtils.*;
@@ -19,7 +22,7 @@ import static io.github.alathra.charactercards.database.QueryUtils.*;
  * A class providing access to all SQL queries.
  */
 public abstract class Queries {
-    public static void savePlayerProfile(PlayerProfile playerProfile, String field) {
+    public static void savePlayerProfile(PlayerProfile playerProfile, String field, Player player) {
         final PlayerProfile profile = playerProfile.clone();
         CompletableFuture.runAsync(() -> {
             try (Connection con = DB.getConnection()) {
@@ -31,50 +34,59 @@ public abstract class Queries {
                             .set(CARDS.PLAYER_NAME, profile.getPlayer_name())
                             .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
                             .execute();
+                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
                         return;
                     case "TITLE":
                         context.update(CARDS)
                             .set(CARDS.CHARACTER_TITLE, profile.getCharacter_title())
                             .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
                             .execute();
+                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
                         return;
                     case "FIRST_NAME":
                         context.update(CARDS)
                             .set(CARDS.CHARACTER_FIRST_NAME, profile.getCharacter_first_name())
                             .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
                             .execute();
+                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
                         return;
                     case "LAST_NAME":
                         context.update(CARDS)
                             .set(CARDS.CHARACTER_LAST_NAME, profile.getCharacter_last_name())
                             .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
                             .execute();
+                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
                         return;
                     case "SUFFIX":
                         context.update(CARDS)
                             .set(CARDS.CHARACTER_SUFFIX, profile.getCharacter_suffix())
                             .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
                             .execute();
+                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
                         return;
                     case "GENDER":
                         context.update(CARDS)
                             .set(CARDS.CHARACTER_GENDER, profile.getCharacter_gender())
                             .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
                             .execute();
+                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
                         return;
                     case "AGE":
                         context.update(CARDS)
                             .set(CARDS.CHARACTER_AGE, profile.getCharacter_age())
                             .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
                             .execute();
+                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
                         return;
                     case "DESCRIPTION":
                         context.update(CARDS)
                             .set(CARDS.CHARACTER_DESCRIPTION, profile.getCharacter_description())
                             .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
                             .execute();
+                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
                 }
-            } catch (SQLException e) {
+            } catch (DataAccessException | SQLException e) {
+                player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savefail")).build());
                 throw new RuntimeException(e);
             }
         });
@@ -145,13 +157,12 @@ public abstract class Queries {
 
                     //check if player name has changed
                     if(!player.getName().equals(record.get(CARDS.PLAYER_NAME))) {
-                        savePlayerProfile(profile, "NAME");
+                        savePlayerProfile(profile, "NAME", player);
                     }
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-
             return Optional.of(profile);
         });
     }
@@ -186,12 +197,6 @@ public abstract class Queries {
                     record.get(CARDS.CHARACTER_AGE),
                     record.get(CARDS.CHARACTER_DESCRIPTION)
                 );
-
-                //check if player name has changed
-                if(!player.getName().equals(record.get(CARDS.PLAYER_NAME))) {
-                    savePlayerProfile(profile, "NAME");
-                }
-
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }

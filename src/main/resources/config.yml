@@ -1,5 +1,8 @@
+# Language, specify the language file to use, for example `en_US` which will load `/lang/en_US.json`
+language: "en_US"
+
 # =========================================
-# |    CharacterCards3 by ShermansWorld   |
+# |       CharacterCards3 by Schmeb_      |
 # =========================================
 
 CardSettings:

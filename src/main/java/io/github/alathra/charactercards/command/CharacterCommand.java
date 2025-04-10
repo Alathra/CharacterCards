@@ -8,6 +8,7 @@ import io.github.alathra.charactercards.core.Cards;
 import io.github.alathra.charactercards.core.PlayerProfile;
 import io.github.alathra.charactercards.database.Queries;
 import io.github.milkdrinkers.colorparser.ColorParser;
+import io.github.milkdrinkers.wordweaver.Translation;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -50,11 +51,11 @@ public class CharacterCommand {
                                 Cards.displayOfflinePlayerCard(player, target);
                             }
                             else {
-                                player.sendMessage(ColorParser.of("<red>[<b>✖</b>] <red>Player <white><b>" + target.getName() + " </b><red>has not joined the server.").build());
+                                player.sendMessage(ColorParser.of("<red>[<b>✖</b>] <red>Player has not joined the server.").build());
                             }
                         }
                         else {
-                            player.sendMessage(ColorParser.of("<red>[<b>✖</b>] <red>Player has not joined the server.").build());
+                            player.sendMessage(ColorParser.of("<red>[<b>✖</b>] <red>Player does not exist.").build());
                         }
                     }))
                 )
@@ -105,11 +106,10 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacter_title(title);
-            Queries.savePlayerProfile(profile, "TITLE");
-            player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
+            Queries.savePlayerProfile(profile, "TITLE", player);
         }
         else {
-            player.sendMessage(ColorParser.of("<red>[<b>✖</b>] Title is too long, limited to <dark_red><b>" + titleMaxLength + " </b><red>characters only").build());
+            player.sendMessage(ColorParser.of(Translation.of("cards.error.title").replace("%max_length%", String.valueOf(titleMaxLength))).build());
         }
     }
 
@@ -120,11 +120,10 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacter_first_name(firstname);
-            Queries.savePlayerProfile(profile , "FIRST_NAME");
-            player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
+            Queries.savePlayerProfile(profile , "FIRST_NAME", player);
         }
         else {
-            player.sendMessage(ColorParser.of("<dark_gray>[<b><red>✖</b><dark_gray>]<red> First Name is too long, limited to <dark_red><b>" + firstNameMaxLength + " </b><red>characters only").build());
+            player.sendMessage(ColorParser.of(Translation.of("cards.error.firstname").replace("%max_length%", String.valueOf(firstNameMaxLength))).build());
         }
     }
 
@@ -135,11 +134,10 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacter_last_name(lastname);
-            Queries.savePlayerProfile(profile, "LAST_NAME");
-            player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
+            Queries.savePlayerProfile(profile, "LAST_NAME", player);
         }
         else {
-            player.sendMessage(ColorParser.of("<dark_gray>[<b><red>✖</b><dark_gray>]<red> Last Name is too long, limited to <dark_red><b>" + lastNameMaxLength + " </b><red>characters only").build());
+            player.sendMessage(ColorParser.of(Translation.of("cards.error.lastname").replace("%max_length%", String.valueOf(lastNameMaxLength))).build());
         }
     }
 
@@ -150,11 +148,10 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacter_suffix(suffix);
-            Queries.savePlayerProfile(profile, "SUFFIX");
-            player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
+            Queries.savePlayerProfile(profile, "SUFFIX", player);
         }
         else {
-            player.sendMessage(ColorParser.of("<dark_gray>[<b><red>✖</b><dark_gray>]<red> Suffix is too long, limited to <dark_red><b>" + suffixMaxLength + " </b><red>characters only").parseLegacy().build());
+            player.sendMessage(ColorParser.of(Translation.of("cards.error.suffix").replace("%max_length%", String.valueOf(suffixMaxLength))).build());
         }
     }
 
@@ -165,11 +162,10 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacter_gender(gender);
-            Queries.savePlayerProfile(profile, "GENDER");
-            player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
+            Queries.savePlayerProfile(profile, "GENDER", player);
         }
         else {
-            player.sendMessage(ColorParser.of("<dark_gray>[<b><red>✖</b><dark_gray>]<red> Gender input is too long, limited to <dark_red><b>" + genderMaxLength + " </b><red>characters only").parseLegacy().build());
+            player.sendMessage(ColorParser.of(Translation.of("cards.error.gender").replace("%max_length%", String.valueOf(genderMaxLength))).build());
         }
     }
 
@@ -182,7 +178,10 @@ public class CharacterCommand {
         try {
             inputAge = Integer.parseInt(age);
         } catch (ClassCastException | NumberFormatException e) {
-            player.sendMessage(ColorParser.of("<dark_gray>[<b><red>✖</b><dark_gray>]<red> Please input a number from <dark_red><b>" + minimumAge + "-" + maximumAge).parseLegacy().build());
+            player.sendMessage(ColorParser.of(Translation.of("cards.error.age_notanumber")
+                .replace("%minimum_age%", String.valueOf(minimumAge))
+                .replace("%maximum_age%", String.valueOf(maximumAge)))
+                .build());
             return;
         }
 
@@ -190,11 +189,13 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacter_age(inputAge);
-            Queries.savePlayerProfile(profile, "AGE");
-            player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
+            Queries.savePlayerProfile(profile, "AGE", player);
         }
         else {
-            player.sendMessage(ColorParser.of("<dark_gray>[<b><red>✖</b><dark_gray>]<red> Age number too small/large, limited to a range of <dark_red><b>" + minimumAge + "-" + maximumAge).parseLegacy().build());
+            player.sendMessage(ColorParser.of(Translation.of("cards.error.age")
+                    .replace("%minimum_age%", String.valueOf(minimumAge))
+                    .replace("%maximum_age%", String.valueOf(maximumAge)))
+                .build());
         }
     }
 
@@ -205,11 +206,10 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacter_description(desc);
-            Queries.savePlayerProfile(profile, "DESCRIPTION");
-            player.sendMessage(ColorParser.of("<dark_gray>[<dark_green><b>✔</b><dark_gray>]<green> Character card saved successfully").parseLegacy().build());
+            Queries.savePlayerProfile(profile, "DESCRIPTION", player);
         }
         else {
-            player.sendMessage(ColorParser.of("<dark_gray>[<b><red>✖</b><dark_gray>]<red> Description too long, limited to <dark_red><b>"  + descriptionCharacterLimit + " </b><red>characters only").parseLegacy().build());
+            player.sendMessage(ColorParser.of(Translation.of("cards.error.desc").replace("%max_length%", String.valueOf(descriptionCharacterLimit))).build());
         }
     }
 }

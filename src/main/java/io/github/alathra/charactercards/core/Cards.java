@@ -21,7 +21,7 @@ public class Cards {
         int nameLength;
         nameLength = targetPlayer.getName().length() / 2;
 
-        dashDecor.append("=".repeat(Math.max(0, 15 - nameLength)));
+        dashDecor.append("=".repeat(Math.max(0, 16 - nameLength)));
 
         player.sendMessage(ColorParser.of("<dark_gray>╔<b>" + dashDecor + "</b></dark_gray><gray>[<dark_aqua>" + targetPlayer.getName() + "’s Card</dark_aqua><gray>]<dark_gray><b>" + dashDecor + "</b>╗").build());
         player.sendMessage(ColorParser.of("<dark_aqua>   " + Translation.of("cards.player.ign", "IGN ") + " <dark_gray>≫ <aqua>" + targetPlayer.getName()).build());
@@ -65,7 +65,7 @@ public class Cards {
         int nameLength;
         nameLength = targetPlayer.getPlayer().getName().length() / 2;
 
-        dashDecor.append("=".repeat(Math.max(0, 15 - nameLength)));
+        dashDecor.append("=".repeat(Math.max(0, 16 - nameLength)));
 
         player.sendMessage(ColorParser.of("<dark_gray>╔<b>" + dashDecor + "</b></dark_gray><gray>[<dark_aqua>" + targetPlayer.getName() + "’s Card</dark_aqua><gray>]<dark_gray><b>" + dashDecor + "</b>╗").build());
         player.sendMessage(ColorParser.of("<dark_aqua>   " + Translation.of("cards.player.lastonline", "Last Online") + " <dark_gray>≫ <aqua>" +
