@@ -10,7 +10,7 @@
       "ign": "IGN",
       "name": "Name",
       "gender": "Gender",
-      "age": "Description",
+      "age": "Age",
       "lastonline": "Last Online"
     },
     "help": {
