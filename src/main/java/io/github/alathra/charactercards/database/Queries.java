@@ -1,6 +1,7 @@
 package io.github.alathra.charactercards.database;
 
 import io.github.alathra.charactercards.core.PlayerProfile;
+import io.github.alathra.charactercards.core.ProfileField;
 import io.github.alathra.charactercards.utility.DB;
 import io.github.milkdrinkers.colorparser.ColorParser;
 import io.github.milkdrinkers.wordweaver.Translation;
@@ -11,6 +12,7 @@ import org.jooq.DSLContext;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import org.jooq.Record;
 import org.jooq.exception.DataAccessException;
@@ -22,7 +24,7 @@ import static io.github.alathra.charactercards.database.QueryUtils.*;
  * A class providing access to all SQL queries.
  */
 public abstract class Queries {
-    public static void savePlayerProfile(PlayerProfile playerProfile, String field, Player player) {
+    public static void savePlayerProfile(PlayerProfile playerProfile, ProfileField field, Player player) {
         final PlayerProfile clonedProfile = playerProfile.clone();
 
         CompletableFuture.runAsync(() -> {
@@ -31,42 +33,42 @@ public abstract class Queries {
                 byte[] uuidBytes = UUIDUtil.toBytes(clonedProfile.getPlayerUuid());
 
                 boolean success = switch (field) {
-                    case "NAME" ->
+                    case NAME ->
                         context.update(CARDS)
                             .set(CARDS.PLAYER_NAME, clonedProfile.getPlayerName())
                             .where(CARDS.PLAYER_UUID.eq(uuidBytes))
                             .execute() > 0;
-                    case "TITLE" ->
+                    case TITLE ->
                         context.update(CARDS)
                             .set(CARDS.CHARACTER_TITLE, clonedProfile.getCharacterTitle())
                             .where(CARDS.PLAYER_UUID.eq(uuidBytes))
                             .execute() > 0;
-                    case "FIRST_NAME" ->
+                    case FIRST_NAME ->
                         context.update(CARDS)
                             .set(CARDS.CHARACTER_FIRST_NAME, clonedProfile.getCharacterFirstName())
                             .where(CARDS.PLAYER_UUID.eq(uuidBytes))
                             .execute() > 0;
-                    case "LAST_NAME" ->
+                    case LAST_NAME ->
                         context.update(CARDS)
                             .set(CARDS.CHARACTER_LAST_NAME, clonedProfile.getCharacterLastName())
                             .where(CARDS.PLAYER_UUID.eq(uuidBytes))
                             .execute() > 0;
-                    case "SUFFIX" ->
+                    case SUFFIX ->
                         context.update(CARDS)
                             .set(CARDS.CHARACTER_SUFFIX, clonedProfile.getCharacterSuffix())
                             .where(CARDS.PLAYER_UUID.eq(uuidBytes))
                             .execute() > 0;
-                    case "GENDER" ->
+                    case GENDER ->
                         context.update(CARDS)
                             .set(CARDS.CHARACTER_GENDER, clonedProfile.getCharacterGender())
                             .where(CARDS.PLAYER_UUID.eq(uuidBytes))
                             .execute() > 0;
-                    case "AGE" ->
+                    case AGE ->
                         context.update(CARDS)
                             .set(CARDS.CHARACTER_AGE, clonedProfile.getCharacterAge())
                             .where(CARDS.PLAYER_UUID.eq(uuidBytes))
                             .execute() > 0;
-                    case "DESCRIPTION" ->
+                    case DESCRIPTION ->
                         context.update(CARDS)
                             .set(CARDS.CHARACTER_DESCRIPTION, clonedProfile.getCharacterDescription())
                             .where(CARDS.PLAYER_UUID.eq(uuidBytes))
@@ -92,11 +94,11 @@ public abstract class Queries {
             PlayerProfile profile;
 
             try (Connection con = DB.getConnection()) {
+                byte[] uuidBytes = UUIDUtil.toBytes(player.getUniqueId());
                 DSLContext context = DB.getContext(con);
-
                 Record record = context.select()
                     .from(CARDS)
-                    .where(CARDS.PLAYER_UUID.eq(UUIDUtil.toBytes(player.getUniqueId())))
+                    .where(CARDS.PLAYER_UUID.eq(uuidBytes))
                     .fetchOne();
 
                 if (record == null) {
@@ -127,7 +129,7 @@ public abstract class Queries {
                         CARDS.CHARACTER_AGE,
                         CARDS.CHARACTER_DESCRIPTION
                     ).values(
-                        QueryUtils.UUIDUtil.toBytes(player.getUniqueId()),
+                        uuidBytes,
                         player.getName(),
                         profile.getCharacterTitle(),
                         profile.getCharacterFirstName(),
@@ -138,22 +140,7 @@ public abstract class Queries {
                         profile.getCharacterDescription()
                     ).execute();
                 } else {
-                    profile = new PlayerProfile(
-                        player.getUniqueId(),
-                        player.getName(),
-                        record.get(CARDS.CHARACTER_TITLE),
-                        record.get(CARDS.CHARACTER_FIRST_NAME),
-                        record.get(CARDS.CHARACTER_LAST_NAME),
-                        record.get(CARDS.CHARACTER_SUFFIX),
-                        record.get(CARDS.CHARACTER_GENDER),
-                        record.get(CARDS.CHARACTER_AGE),
-                        record.get(CARDS.CHARACTER_DESCRIPTION)
-                    );
-
-                    //check if player name has changed
-                    if(!player.getName().equals(record.get(CARDS.PLAYER_NAME))) {
-                        savePlayerProfile(profile, "NAME", player);
-                    }
+                    profile = mapRecordToProfile(record, player.getUniqueId(), player.getName());
                 }
             } catch (SQLException e) {
                 throw new RuntimeException(e);
@@ -162,16 +149,14 @@ public abstract class Queries {
         });
     }
 
-    public static void loadOfflinePlayerProfile(OfflinePlayer player) {
-        CompletableFuture.supplyAsync(() -> {
-            PlayerProfile profile;
-
+    public static CompletableFuture<Optional<PlayerProfile>> loadOfflinePlayerProfile(OfflinePlayer player) {
+        return CompletableFuture.supplyAsync(() -> {
             try (Connection con = DB.getConnection()) {
+                byte[] uuidBytes = UUIDUtil.toBytes(player.getUniqueId());
                 DSLContext context = DB.getContext(con);
-
                 Record record = context.select()
                     .from(CARDS)
-                    .where(CARDS.PLAYER_UUID.eq(UUIDUtil.toBytes(player.getUniqueId())))
+                    .where(CARDS.PLAYER_UUID.eq(uuidBytes))
                     .fetchOne();
 
                 // if no record exists, player has not joined the server
@@ -181,21 +166,28 @@ public abstract class Queries {
                     return Optional.empty();
                 }
 
-                profile = new PlayerProfile(
-                    player.getUniqueId(),
-                    player.getName(),
-                    record.get(CARDS.CHARACTER_TITLE),
-                    record.get(CARDS.CHARACTER_FIRST_NAME),
-                    record.get(CARDS.CHARACTER_LAST_NAME),
-                    record.get(CARDS.CHARACTER_SUFFIX),
-                    record.get(CARDS.CHARACTER_GENDER),
-                    record.get(CARDS.CHARACTER_AGE),
-                    record.get(CARDS.CHARACTER_DESCRIPTION)
-                );
+                return Optional.of(mapRecordToProfile(record, player.getUniqueId(), player.getName()));
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            return Optional.of(profile);
         });
+    }
+
+    public static boolean hasPlayerNameChanged(String newName, String oldName) {
+        return !newName.equals(oldName);
+    }
+
+    private static PlayerProfile mapRecordToProfile(Record record, UUID uuid, String playerName) {
+        return new PlayerProfile(
+            uuid,
+            playerName,
+            record.get(CARDS.CHARACTER_TITLE),
+            record.get(CARDS.CHARACTER_FIRST_NAME),
+            record.get(CARDS.CHARACTER_LAST_NAME),
+            record.get(CARDS.CHARACTER_SUFFIX),
+            record.get(CARDS.CHARACTER_GENDER),
+            record.get(CARDS.CHARACTER_AGE),
+            record.get(CARDS.CHARACTER_DESCRIPTION)
+        );
     }
 }

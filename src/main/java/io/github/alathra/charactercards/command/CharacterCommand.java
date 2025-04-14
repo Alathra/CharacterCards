@@ -12,6 +12,8 @@ import io.github.milkdrinkers.wordweaver.Translation;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
+import static io.github.alathra.charactercards.core.ProfileField.*;
+
 public class CharacterCommand {
     @SuppressWarnings("all")
     protected CharacterCommand() {
@@ -46,11 +48,21 @@ public class CharacterCommand {
                             OfflinePlayer target = (OfflinePlayer) commandArguments.get("target");
 
                             if(target.hasPlayedBefore()) {
-                                Queries.loadOfflinePlayerProfile(target);
+                                Queries.loadOfflinePlayerProfile(target).thenAccept(optionalPlayerProfile -> {
+                                    if(optionalPlayerProfile.isPresent()) {
+                                        PlayerProfile profile = optionalPlayerProfile.get();
 
-                                Cards.displayOfflinePlayerCard(player, target);
-                            }
-                            else {
+                                        // Change old player name to new player name
+                                        if (Queries.hasPlayerNameChanged(player.getName(), profile.getPlayerName())) {
+                                            profile.setPlayerName(player.getName());
+                                        }
+
+                                        CharacterCards.playerProfiles.put(player.getUniqueId(), profile);
+                                    }
+
+                                    Cards.displayOfflinePlayerCard(player, target);
+                                });
+                            } else {
                                 player.sendMessage(ColorParser.of("<red>[<b>✖</b>] <red>Player has not joined the server.").build());
                             }
                         }
@@ -106,7 +118,7 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacterTitle(title);
-            Queries.savePlayerProfile(profile, "TITLE", player);
+            Queries.savePlayerProfile(profile, TITLE, player);
         }
         else {
             player.sendMessage(ColorParser.of(Translation.of("cards.error.title").replace("%max_length%", String.valueOf(titleMaxLength))).build());
@@ -120,7 +132,7 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacterFirstName(firstname);
-            Queries.savePlayerProfile(profile , "FIRST_NAME", player);
+            Queries.savePlayerProfile(profile , FIRST_NAME, player);
         }
         else {
             player.sendMessage(ColorParser.of(Translation.of("cards.error.firstname").replace("%max_length%", String.valueOf(firstNameMaxLength))).build());
@@ -134,7 +146,7 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacterLastName(lastname);
-            Queries.savePlayerProfile(profile, "LAST_NAME", player);
+            Queries.savePlayerProfile(profile, LAST_NAME, player);
         }
         else {
             player.sendMessage(ColorParser.of(Translation.of("cards.error.lastname").replace("%max_length%", String.valueOf(lastNameMaxLength))).build());
@@ -148,7 +160,7 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacterSuffix(suffix);
-            Queries.savePlayerProfile(profile, "SUFFIX", player);
+            Queries.savePlayerProfile(profile, SUFFIX, player);
         }
         else {
             player.sendMessage(ColorParser.of(Translation.of("cards.error.suffix").replace("%max_length%", String.valueOf(suffixMaxLength))).build());
@@ -162,7 +174,7 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacterGender(gender);
-            Queries.savePlayerProfile(profile, "GENDER", player);
+            Queries.savePlayerProfile(profile, GENDER, player);
         }
         else {
             player.sendMessage(ColorParser.of(Translation.of("cards.error.gender").replace("%max_length%", String.valueOf(genderMaxLength))).build());
@@ -189,7 +201,7 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacterAge(inputAge);
-            Queries.savePlayerProfile(profile, "AGE", player);
+            Queries.savePlayerProfile(profile, AGE, player);
         }
         else {
             player.sendMessage(ColorParser.of(Translation.of("cards.error.age")
@@ -206,7 +218,7 @@ public class CharacterCommand {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
             profile.setCharacterDescription(desc);
-            Queries.savePlayerProfile(profile, "DESCRIPTION", player);
+            Queries.savePlayerProfile(profile, DESCRIPTION, player);
         }
         else {
             player.sendMessage(ColorParser.of(Translation.of("cards.error.desc").replace("%max_length%", String.valueOf(descriptionCharacterLimit))).build());
