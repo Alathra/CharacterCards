@@ -23,7 +23,11 @@ import static io.github.alathra.charactercards.database.QueryUtils.*;
 /**
  * A class providing access to all SQL queries.
  */
-public abstract class Queries {
+public final class Queries {
+    private Queries() {
+        throw new AssertionError("Cannot instantiate Queries class");
+    }
+
     public static void savePlayerProfile(PlayerProfile playerProfile, ProfileField field, Player player) {
         final PlayerProfile clonedProfile = playerProfile.clone();
 
@@ -73,7 +77,6 @@ public abstract class Queries {
                             .set(CARDS.CHARACTER_DESCRIPTION, clonedProfile.getCharacterDescription())
                             .where(CARDS.PLAYER_UUID.eq(uuidBytes))
                             .execute() > 0;
-                    default -> false;
                 };
 
                 if(success) {
@@ -102,43 +105,7 @@ public abstract class Queries {
                     .fetchOne();
 
                 if (record == null) {
-                    //loads in a new entry into server memory
-                    profile = new PlayerProfile(
-                        player.getUniqueId(),
-                        player.getName(),
-                        "",
-                        "",
-                        "",
-                        "",
-                        "",
-                        0,
-                        ""
-                    );
-
-                    //saves the previous created entry into the database
-                    context.insertInto(
-                        CARDS,
-
-                        CARDS.PLAYER_UUID,
-                        CARDS.PLAYER_NAME,
-                        CARDS.CHARACTER_TITLE,
-                        CARDS.CHARACTER_FIRST_NAME,
-                        CARDS.CHARACTER_LAST_NAME,
-                        CARDS.CHARACTER_SUFFIX,
-                        CARDS.CHARACTER_GENDER,
-                        CARDS.CHARACTER_AGE,
-                        CARDS.CHARACTER_DESCRIPTION
-                    ).values(
-                        uuidBytes,
-                        player.getName(),
-                        profile.getCharacterTitle(),
-                        profile.getCharacterFirstName(),
-                        profile.getCharacterLastName(),
-                        profile.getCharacterSuffix(),
-                        profile.getCharacterGender(),
-                        profile.getCharacterAge(),
-                        profile.getCharacterDescription()
-                    ).execute();
+                    profile = createNewProfile(context, player);
                 } else {
                     profile = mapRecordToProfile(record, player.getUniqueId(), player.getName());
                 }
@@ -189,5 +156,49 @@ public abstract class Queries {
             record.get(CARDS.CHARACTER_AGE),
             record.get(CARDS.CHARACTER_DESCRIPTION)
         );
+    }
+
+    private static PlayerProfile createNewProfile(DSLContext context, Player player) {
+        byte[] uuidBytes = UUIDUtil.toBytes(player.getUniqueId());
+
+        //loads in a new entry into server memory
+        PlayerProfile playerProfile = new PlayerProfile(
+            player.getUniqueId(),
+            player.getName(),
+            "",
+            "",
+            "",
+            "",
+            "",
+            0,
+            ""
+        );
+
+        //saves the created entry into the database
+        context.insertInto(
+            CARDS,
+
+            CARDS.PLAYER_UUID,
+            CARDS.PLAYER_NAME,
+            CARDS.CHARACTER_TITLE,
+            CARDS.CHARACTER_FIRST_NAME,
+            CARDS.CHARACTER_LAST_NAME,
+            CARDS.CHARACTER_SUFFIX,
+            CARDS.CHARACTER_GENDER,
+            CARDS.CHARACTER_AGE,
+            CARDS.CHARACTER_DESCRIPTION
+        ).values(
+            uuidBytes,
+            player.getName(),
+            playerProfile.getCharacterTitle(),
+            playerProfile.getCharacterFirstName(),
+            playerProfile.getCharacterLastName(),
+            playerProfile.getCharacterSuffix(),
+            playerProfile.getCharacterGender(),
+            playerProfile.getCharacterAge(),
+            playerProfile.getCharacterDescription()
+        ).execute();
+
+        return playerProfile;
     }
 }
