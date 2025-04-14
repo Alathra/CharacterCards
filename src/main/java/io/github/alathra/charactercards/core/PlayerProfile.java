@@ -26,63 +26,63 @@ public class PlayerProfile implements Cloneable{
         this.characterDescription = characterDescription;
     }
 
-    public UUID getPlayer_uuid() {
+    public UUID getPlayerUuid() {
         return playerUuid;
     }
 
-    public String getPlayer_name() {
+    public String getPlayerName() {
         return playerName;
     }
-    public void setPlayer_name(String playerName) {
+    public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
 
-    public String getCharacter_title() {
+    public String getCharacterTitle() {
         return characterTitle;
     }
-    public void setCharacter_title(String characterTitle) {
+    public void setCharacterTitle(String characterTitle) {
         this.characterTitle = characterTitle;
     }
 
-    public String getCharacter_first_name() {
+    public String getCharacterFirstName() {
         return characterFirstName;
     }
-    public void setCharacter_first_name(String characterFirstName) {
+    public void setCharacterFirstName(String characterFirstName) {
         this.characterFirstName = characterFirstName;
     }
 
-    public String getCharacter_last_name() {
+    public String getCharacterLastName() {
         return characterLastName;
     }
-    public void setCharacter_last_name(String characterLastName) {
+    public void setCharacterLastName(String characterLastName) {
         this.characterLastName = characterLastName;
     }
 
-    public String getCharacter_suffix() {
+    public String getCharacterSuffix() {
         return characterSuffix;
     }
-    public void setCharacter_suffix(String characterSuffix) {
+    public void setCharacterSuffix(String characterSuffix) {
         this.characterSuffix = characterSuffix;
     }
 
-    public String getCharacter_gender() {
+    public String getCharacterGender() {
         return characterGender;
     }
-    public void setCharacter_gender(String characterGender) {
+    public void setCharacterGender(String characterGender) {
         this.characterGender = characterGender;
     }
 
-    public int getCharacter_age() {
+    public int getCharacterAge() {
         return characterAge;
     }
-    public void setCharacter_age(int characterAge) {
+    public void setCharacterAge(int characterAge) {
         this.characterAge = characterAge;
     }
 
-    public String getCharacter_description() {
+    public String getCharacterDescription() {
         return characterDescription;
     }
-    public void setCharacter_description(String characterDescription) {
+    public void setCharacterDescription(String characterDescription) {
         this.characterDescription = characterDescription;
     }
 

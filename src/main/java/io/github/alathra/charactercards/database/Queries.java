@@ -23,68 +23,63 @@ import static io.github.alathra.charactercards.database.QueryUtils.*;
  */
 public abstract class Queries {
     public static void savePlayerProfile(PlayerProfile playerProfile, String field, Player player) {
-        final PlayerProfile profile = playerProfile.clone();
+        final PlayerProfile clonedProfile = playerProfile.clone();
+
         CompletableFuture.runAsync(() -> {
             try (Connection con = DB.getConnection()) {
                 DSLContext context = DB.getContext(con);
+                byte[] uuidBytes = UUIDUtil.toBytes(clonedProfile.getPlayerUuid());
 
-                switch (field) {
-                    case "NAME":
+                boolean success = switch (field) {
+                    case "NAME" ->
                         context.update(CARDS)
-                            .set(CARDS.PLAYER_NAME, profile.getPlayer_name())
-                            .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
-                            .execute();
-                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
-                        return;
-                    case "TITLE":
+                            .set(CARDS.PLAYER_NAME, clonedProfile.getPlayerName())
+                            .where(CARDS.PLAYER_UUID.eq(uuidBytes))
+                            .execute() > 0;
+                    case "TITLE" ->
                         context.update(CARDS)
-                            .set(CARDS.CHARACTER_TITLE, profile.getCharacter_title())
-                            .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
-                            .execute();
-                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
-                        return;
-                    case "FIRST_NAME":
+                            .set(CARDS.CHARACTER_TITLE, clonedProfile.getCharacterTitle())
+                            .where(CARDS.PLAYER_UUID.eq(uuidBytes))
+                            .execute() > 0;
+                    case "FIRST_NAME" ->
                         context.update(CARDS)
-                            .set(CARDS.CHARACTER_FIRST_NAME, profile.getCharacter_first_name())
-                            .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
-                            .execute();
-                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
-                        return;
-                    case "LAST_NAME":
+                            .set(CARDS.CHARACTER_FIRST_NAME, clonedProfile.getCharacterFirstName())
+                            .where(CARDS.PLAYER_UUID.eq(uuidBytes))
+                            .execute() > 0;
+                    case "LAST_NAME" ->
                         context.update(CARDS)
-                            .set(CARDS.CHARACTER_LAST_NAME, profile.getCharacter_last_name())
-                            .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
-                            .execute();
-                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
-                        return;
-                    case "SUFFIX":
+                            .set(CARDS.CHARACTER_LAST_NAME, clonedProfile.getCharacterLastName())
+                            .where(CARDS.PLAYER_UUID.eq(uuidBytes))
+                            .execute() > 0;
+                    case "SUFFIX" ->
                         context.update(CARDS)
-                            .set(CARDS.CHARACTER_SUFFIX, profile.getCharacter_suffix())
-                            .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
-                            .execute();
-                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
-                        return;
-                    case "GENDER":
+                            .set(CARDS.CHARACTER_SUFFIX, clonedProfile.getCharacterSuffix())
+                            .where(CARDS.PLAYER_UUID.eq(uuidBytes))
+                            .execute() > 0;
+                    case "GENDER" ->
                         context.update(CARDS)
-                            .set(CARDS.CHARACTER_GENDER, profile.getCharacter_gender())
-                            .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
-                            .execute();
-                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
-                        return;
-                    case "AGE":
+                            .set(CARDS.CHARACTER_GENDER, clonedProfile.getCharacterGender())
+                            .where(CARDS.PLAYER_UUID.eq(uuidBytes))
+                            .execute() > 0;
+                    case "AGE" ->
                         context.update(CARDS)
-                            .set(CARDS.CHARACTER_AGE, profile.getCharacter_age())
-                            .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
-                            .execute();
-                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
-                        return;
-                    case "DESCRIPTION":
+                            .set(CARDS.CHARACTER_AGE, clonedProfile.getCharacterAge())
+                            .where(CARDS.PLAYER_UUID.eq(uuidBytes))
+                            .execute() > 0;
+                    case "DESCRIPTION" ->
                         context.update(CARDS)
-                            .set(CARDS.CHARACTER_DESCRIPTION, profile.getCharacter_description())
-                            .where(CARDS.PLAYER_UUID.eq(QueryUtils.UUIDUtil.toBytes(profile.getPlayer_uuid())))
-                            .execute();
-                        player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
+                            .set(CARDS.CHARACTER_DESCRIPTION, clonedProfile.getCharacterDescription())
+                            .where(CARDS.PLAYER_UUID.eq(uuidBytes))
+                            .execute() > 0;
+                    default -> false;
+                };
+
+                if(success) {
+                    player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savesuccess")).build());
+                } else {
+                    player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savefail")).build());
                 }
+
             } catch (DataAccessException | SQLException e) {
                 player.sendMessage(ColorParser.of(Translation.of("cards.error.card_savefail")).build());
                 throw new RuntimeException(e);
@@ -134,13 +129,13 @@ public abstract class Queries {
                     ).values(
                         QueryUtils.UUIDUtil.toBytes(player.getUniqueId()),
                         player.getName(),
-                        profile.getCharacter_title(),
-                        profile.getCharacter_first_name(),
-                        profile.getCharacter_last_name(),
-                        profile.getCharacter_suffix(),
-                        profile.getCharacter_gender(),
-                        profile.getCharacter_age(),
-                        profile.getCharacter_description()
+                        profile.getCharacterTitle(),
+                        profile.getCharacterFirstName(),
+                        profile.getCharacterLastName(),
+                        profile.getCharacterSuffix(),
+                        profile.getCharacterGender(),
+                        profile.getCharacterAge(),
+                        profile.getCharacterDescription()
                     ).execute();
                 } else {
                     profile = new PlayerProfile(

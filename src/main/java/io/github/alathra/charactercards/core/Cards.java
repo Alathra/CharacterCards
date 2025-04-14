@@ -75,11 +75,11 @@ public class Cards {
         }
         sendFormattedMessage(viewer, "<dark_aqua>   " + Translation.of("cards.player.ign", "IGN ") + " <dark_gray>≫ <aqua>" + targetName);
         sendFormattedMessage(viewer, "<dark_aqua>   " + Translation.of("cards.player.name", "Name") + " <dark_gray>≫ <aqua>" + returnFullName(targetPlayerProfile));
-        sendFormattedMessage(viewer, "<dark_aqua>   " + Translation.of("cards.player.gender", "Gender") + " <dark_gray>≫ <aqua>" + targetPlayerProfile.getCharacter_gender());
-        sendFormattedMessage(viewer, "<dark_aqua>   " + Translation.of("cards.player.age", "Age") + " <dark_gray>≫ <aqua>" + targetPlayerProfile.getCharacter_age());
+        sendFormattedMessage(viewer, "<dark_aqua>   " + Translation.of("cards.player.gender", "Gender") + " <dark_gray>≫ <aqua>" + targetPlayerProfile.getCharacterGender());
+        sendFormattedMessage(viewer, "<dark_aqua>   " + Translation.of("cards.player.age", "Age") + " <dark_gray>≫ <aqua>" + targetPlayerProfile.getCharacterAge());
         displayCustomFields(viewer, targetPlayer);
         sendFormattedMessage(viewer, "<dark_gray><b> <st>==============</st></b><gray>[<dark_aqua>" + Translation.of("cards.player.description", "Description") +"<gray>]<b><dark_gray><st>==============");
-        sendFormattedMessage(viewer, "<aqua> " + targetPlayerProfile.getCharacter_description());
+        sendFormattedMessage(viewer, "<aqua> " + targetPlayerProfile.getCharacterDescription());
         sendFormattedMessage(viewer, "<dark_gray>╚<b>===============</b><dark_aqua>≪ °❈° ≫<dark_gray><b>================</b>╝");
     }
 
@@ -89,10 +89,10 @@ public class Cards {
 
     private static String returnFullName(PlayerProfile profile) {
         String[] profileNameParts = {
-            profile.getCharacter_title(),
-            profile.getCharacter_first_name(),
-            profile.getCharacter_last_name(),
-            profile.getCharacter_suffix()
+            profile.getCharacterTitle(),
+            profile.getCharacterFirstName(),
+            profile.getCharacterLastName(),
+            profile.getCharacterSuffix()
         };
 
         return Arrays.stream(profileNameParts)

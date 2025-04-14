@@ -24,8 +24,8 @@ public class PlayerListeners implements Listener {
                 PlayerProfile profile = optionalPlayerProfile.get();
 
                 // Change old player name to new player name
-                if (!player.getName().equals(profile.getPlayer_name())) {
-                    profile.setPlayer_name(player.getName());
+                if (!player.getName().equals(profile.getPlayerName())) {
+                    profile.setPlayerName(player.getName());
                 }
 
                 CharacterCards.playerProfiles.put(player.getUniqueId(), profile);

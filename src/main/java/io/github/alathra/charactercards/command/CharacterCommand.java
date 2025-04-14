@@ -105,7 +105,7 @@ public class CharacterCommand {
         if(title.length() <= titleMaxLength) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
-            profile.setCharacter_title(title);
+            profile.setCharacterTitle(title);
             Queries.savePlayerProfile(profile, "TITLE", player);
         }
         else {
@@ -119,7 +119,7 @@ public class CharacterCommand {
         if(firstname.length() <= firstNameMaxLength) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
-            profile.setCharacter_first_name(firstname);
+            profile.setCharacterFirstName(firstname);
             Queries.savePlayerProfile(profile , "FIRST_NAME", player);
         }
         else {
@@ -133,7 +133,7 @@ public class CharacterCommand {
         if(lastname.length() <= lastNameMaxLength) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
-            profile.setCharacter_last_name(lastname);
+            profile.setCharacterLastName(lastname);
             Queries.savePlayerProfile(profile, "LAST_NAME", player);
         }
         else {
@@ -147,7 +147,7 @@ public class CharacterCommand {
         if(suffix.length() <= suffixMaxLength) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
-            profile.setCharacter_suffix(suffix);
+            profile.setCharacterSuffix(suffix);
             Queries.savePlayerProfile(profile, "SUFFIX", player);
         }
         else {
@@ -161,7 +161,7 @@ public class CharacterCommand {
         if(gender.length() <= genderMaxLength) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
-            profile.setCharacter_gender(gender);
+            profile.setCharacterGender(gender);
             Queries.savePlayerProfile(profile, "GENDER", player);
         }
         else {
@@ -188,7 +188,7 @@ public class CharacterCommand {
         if(inputAge >= minimumAge && inputAge <= maximumAge) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
-            profile.setCharacter_age(inputAge);
+            profile.setCharacterAge(inputAge);
             Queries.savePlayerProfile(profile, "AGE", player);
         }
         else {
@@ -205,7 +205,7 @@ public class CharacterCommand {
         if(desc.length() <= descriptionCharacterLimit) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
-            profile.setCharacter_description(desc);
+            profile.setCharacterDescription(desc);
             Queries.savePlayerProfile(profile, "DESCRIPTION", player);
         }
         else {
