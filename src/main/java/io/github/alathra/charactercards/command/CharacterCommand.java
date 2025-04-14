@@ -181,33 +181,24 @@ public class CharacterCommand {
         }
     }
 
-    private void ageHandler(String age, Player player) {
+    private void ageHandler(String ageString, Player player) {
         int minimumAge = Settings.getMinimumAge();
         int maximumAge = Settings.getMaximumAge();
 
-        int inputAge;
-
         try {
-            inputAge = Integer.parseInt(age);
-        } catch (ClassCastException | NumberFormatException e) {
-            player.sendMessage(ColorParser.of(Translation.of("cards.error.age_notanumber")
-                .replace("%minimum_age%", String.valueOf(minimumAge))
-                .replace("%maximum_age%", String.valueOf(maximumAge)))
-                .build());
-            return;
-        }
+            int inputAge = Integer.parseInt(ageString);
+            if (inputAge < minimumAge || inputAge > maximumAge)
+                throw new IllegalArgumentException();
 
-        if(inputAge >= minimumAge && inputAge <= maximumAge) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
-
             profile.setCharacterAge(inputAge);
             Queries.savePlayerProfile(profile, AGE, player);
-        }
-        else {
-            player.sendMessage(ColorParser.of(Translation.of("cards.error.age")
+        } catch (Exception e) {
+            player.sendMessage(ColorParser.of(
+                Translation.of("cards.error.age")
                     .replace("%minimum_age%", String.valueOf(minimumAge))
-                    .replace("%maximum_age%", String.valueOf(maximumAge)))
-                .build());
+                    .replace("%maximum_age%", String.valueOf(maximumAge))
+            ).build());
         }
     }
 
