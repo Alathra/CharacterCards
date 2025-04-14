@@ -19,11 +19,15 @@ public class PlayerListeners implements Listener {
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
 
-        Queries.loadPlayerProfile(player).thenAccept(data -> {
-            if(data.isPresent()) {
-                PlayerProfile profile = data.get();
+        Queries.loadPlayerProfile(player).thenAccept(optionalPlayerProfile -> {
+            if(optionalPlayerProfile.isPresent()) {
+                PlayerProfile profile = optionalPlayerProfile.get();
 
-                profile.setPlayer_name(player.getName()); //This is for players who changed their name
+                // Change old player name to new player name
+                if (!player.getName().equals(profile.getPlayer_name())) {
+                    profile.setPlayer_name(player.getName());
+                }
+
                 CharacterCards.playerProfiles.put(player.getUniqueId(), profile);
             }
         });
@@ -31,19 +35,19 @@ public class PlayerListeners implements Listener {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractAtEntityEvent event) {
-        Entity interactedPlayer = event.getRightClicked();
+        Entity target = event.getRightClicked();
 
-        if(interactedPlayer instanceof Player) {
-            Player player = event.getPlayer();
+        if(!(target instanceof Player targetPlayer)) return;
+        Player player = event.getPlayer();
 
-            if(Settings.getRightClickPaperEnabled() &&
-                (player.getInventory().getItemInMainHand().getType() == Material.PAPER || player.getInventory().getItemInOffHand().getType() == Material.PAPER)) {
-                Cards.displayCard(player, (Player) interactedPlayer);
-            }
+        boolean isHoldingPaper = player.getInventory().getItemInMainHand().getType() == Material.PAPER ||
+            player.getInventory().getItemInOffHand().getType() == Material.PAPER;
 
-            if(Settings.getShiftRightClickEnabled() && player.isSneaking() && player.getInventory().getItemInMainHand().getType() == Material.AIR) {
-                Cards.displayCard(player, (Player) interactedPlayer);
-            }
+        boolean isEmptyHanded = player.getInventory().getItemInMainHand().getType() == Material.AIR;
+
+        if ((Settings.getRightClickPaperEnabled() && isHoldingPaper) ||
+            (Settings.getShiftRightClickEnabled() && player.isSneaking() && isEmptyHanded)) {
+            Cards.displayCard(player, targetPlayer);
         }
     }
 }
