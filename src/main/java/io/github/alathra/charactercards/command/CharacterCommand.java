@@ -6,11 +6,14 @@ import io.github.alathra.charactercards.CharacterCards;
 import io.github.alathra.charactercards.config.Settings;
 import io.github.alathra.charactercards.core.Cards;
 import io.github.alathra.charactercards.core.PlayerProfile;
+import io.github.alathra.charactercards.core.ProfileField;
 import io.github.alathra.charactercards.database.Queries;
 import io.github.milkdrinkers.colorparser.ColorParser;
 import io.github.milkdrinkers.wordweaver.Translation;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
+import java.util.function.Consumer;
 
 import static io.github.alathra.charactercards.core.ProfileField.*;
 
@@ -44,31 +47,24 @@ public class CharacterCommand {
                 .withSubcommand(new CommandAPICommand("viewoffline")
                     .withArguments(new OfflinePlayerArgument("target"))
                     .executesPlayer(((player, commandArguments) -> {
-                        if(commandArguments.get("target") != null) {
-                            OfflinePlayer target = (OfflinePlayer) commandArguments.get("target");
+                        OfflinePlayer target = (OfflinePlayer) commandArguments.get("target");
 
-                            if(target.hasPlayedBefore()) {
-                                Queries.loadOfflinePlayerProfile(target).thenAccept(optionalPlayerProfile -> {
-                                    if(optionalPlayerProfile.isPresent()) {
-                                        PlayerProfile profile = optionalPlayerProfile.get();
-
-                                        // Change old player name to new player name
-                                        if (Queries.hasPlayerNameChanged(player.getName(), profile.getPlayerName())) {
-                                            profile.setPlayerName(player.getName());
-                                        }
-
-                                        CharacterCards.playerProfiles.put(player.getUniqueId(), profile);
-                                    }
-
-                                    Cards.displayOfflinePlayerCard(player, target);
-                                });
-                            } else {
-                                player.sendMessage(ColorParser.of("<red>[<b>✖</b>] <red>Player has not joined the server.").build());
-                            }
+                        if(!target.hasPlayedBefore()) {
+                            player.sendMessage(ColorParser.of("<red>[<b>✖</b>] <red>Player has not joined the server.").build());
+                            return;
                         }
-                        else {
-                            player.sendMessage(ColorParser.of("<red>[<b>✖</b>] <red>Player does not exist.").build());
-                        }
+
+                        Queries.loadOfflinePlayerProfile(target).thenAccept(optionalPlayerProfile -> {
+                            optionalPlayerProfile.ifPresent(playerProfile -> {
+                                if (Queries.hasPlayerNameChanged(player.getName(), playerProfile.getPlayerName())) {
+                                    playerProfile.setPlayerName(player.getName());
+                                }
+
+                                CharacterCards.playerProfiles.put(player.getUniqueId(), playerProfile);
+                            });
+
+                            Cards.displayOfflinePlayerCard(player, target);
+                        });
                     }))
                 )
                 // /char edit <subarg> <value>
@@ -111,74 +107,64 @@ public class CharacterCommand {
             .register();
     }
 
-    private void titleHandler(String title, Player player) {
-        int titleMaxLength = Settings.getTitleMaxLength();
-
-        if(title.length() <= titleMaxLength) {
+    private void handleStringFieldUpdate(
+        Player player,
+        String input,
+        int maxLength,
+        ProfileField field,
+        Consumer<PlayerProfile> updater,
+        String errorKey
+    ) {
+        if (input.length() <= maxLength) {
             PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
 
-            profile.setCharacterTitle(title);
-            Queries.savePlayerProfile(profile, TITLE, player);
+            updater.accept(profile);
+            Queries.savePlayerProfile(profile, field, player);
+        } else {
+            player.sendMessage(ColorParser.of(
+                Translation.of(errorKey).replace("%max_length%", String.valueOf(maxLength))
+            ).build());
         }
-        else {
-            player.sendMessage(ColorParser.of(Translation.of("cards.error.title").replace("%max_length%", String.valueOf(titleMaxLength))).build());
-        }
+    }
+
+    private void titleHandler(String title, Player player) {
+        handleStringFieldUpdate(
+            player, title, Settings.getTitleMaxLength(), TITLE,
+            p -> p.setCharacterTitle(title),
+            "cards.error.title"
+        );
     }
 
     private void firstNameHandler(String firstname, Player player) {
-        int firstNameMaxLength = Settings.getFirstNameMaxLength();
-
-        if(firstname.length() <= firstNameMaxLength) {
-            PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
-
-            profile.setCharacterFirstName(firstname);
-            Queries.savePlayerProfile(profile , FIRST_NAME, player);
-        }
-        else {
-            player.sendMessage(ColorParser.of(Translation.of("cards.error.firstname").replace("%max_length%", String.valueOf(firstNameMaxLength))).build());
-        }
+        handleStringFieldUpdate(
+            player, firstname, Settings.getFirstNameMaxLength(), FIRST_NAME,
+            p -> p.setCharacterFirstName(firstname),
+            "cards.error.firstname"
+        );
     }
 
     private void lastNameHandler(String lastname, Player player) {
-        int lastNameMaxLength = Settings.getLastNameMaxLength();
-
-        if(lastname.length() <= lastNameMaxLength) {
-            PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
-
-            profile.setCharacterLastName(lastname);
-            Queries.savePlayerProfile(profile, LAST_NAME, player);
-        }
-        else {
-            player.sendMessage(ColorParser.of(Translation.of("cards.error.lastname").replace("%max_length%", String.valueOf(lastNameMaxLength))).build());
-        }
+        handleStringFieldUpdate(
+            player, lastname, Settings.getLastNameMaxLength(), LAST_NAME,
+            p -> p.setCharacterLastName(lastname),
+            "cards.error.lastname"
+        );
     }
 
     private void suffixHandler(String suffix, Player player) {
-        int suffixMaxLength = Settings.getSuffixMaxLength();
-
-        if(suffix.length() <= suffixMaxLength) {
-            PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
-
-            profile.setCharacterSuffix(suffix);
-            Queries.savePlayerProfile(profile, SUFFIX, player);
-        }
-        else {
-            player.sendMessage(ColorParser.of(Translation.of("cards.error.suffix").replace("%max_length%", String.valueOf(suffixMaxLength))).build());
-        }
+        handleStringFieldUpdate(
+            player, suffix, Settings.getSuffixMaxLength(), SUFFIX,
+            p -> p.setCharacterSuffix(suffix),
+            "cards.error.suffix"
+        );
     }
 
     private void genderHandler(String gender, Player player) {
-        int genderMaxLength = Settings.getGenderMaxLength();
-
-        if(gender.length() <= genderMaxLength) {
-            PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
-
-            profile.setCharacterGender(gender);
-            Queries.savePlayerProfile(profile, GENDER, player);
-        }
-        else {
-            player.sendMessage(ColorParser.of(Translation.of("cards.error.gender").replace("%max_length%", String.valueOf(genderMaxLength))).build());
-        }
+        handleStringFieldUpdate(
+            player, gender, Settings.getGenderMaxLength(), GENDER,
+            p -> p.setCharacterGender(gender),
+            "cards.error.gender"
+        );
     }
 
     private void ageHandler(String ageString, Player player) {
@@ -203,16 +189,10 @@ public class CharacterCommand {
     }
 
     private void descriptionHandler(String desc, Player player) {
-        int descriptionCharacterLimit = Settings.getDescriptionCharacterLimit();
-
-        if(desc.length() <= descriptionCharacterLimit) {
-            PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
-
-            profile.setCharacterDescription(desc);
-            Queries.savePlayerProfile(profile, DESCRIPTION, player);
-        }
-        else {
-            player.sendMessage(ColorParser.of(Translation.of("cards.error.desc").replace("%max_length%", String.valueOf(descriptionCharacterLimit))).build());
-        }
+        handleStringFieldUpdate(
+            player, desc, Settings.getDescriptionCharacterLimit(), DESCRIPTION,
+            p -> p.setCharacterDescription(desc),
+            "cards.error.desc"
+        );
     }
 }
