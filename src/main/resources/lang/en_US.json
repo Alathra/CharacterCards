@@ -35,7 +35,7 @@
       "firstname": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> First Name is too long, limited to <dark_red><b>%max_length%</b><red> characters only",
       "lastname": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Last Name is too long, limited to <dark_red><b>%max_length%</b><red> characters only",
       "suffix": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Suffix is too long, limited to <dark_red><b>%max_length%</b><red> characters only",
-      "gender": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> You can only put Male, Female, or Others",
+      "gender": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> You can only put Male, Female, or Other",
       "age_notanumber": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Please input a number from <dark_red><b>%minimum_age%-%maximum_age%",
       "age": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Age number too low/high, limited to a range of <dark_red><b>%minimum_age%-%maximum_age%",
       "desc": "<dark_gray>[<b><red>✖</b><dark_gray>]<red> Description too long, limited to <dark_red><b>%max_length%</b><red> characters only"

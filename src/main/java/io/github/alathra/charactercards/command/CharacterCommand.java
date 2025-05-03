@@ -82,7 +82,7 @@ public class CharacterCommand {
                             if ("gender".equalsIgnoreCase(previousArg)) {
                                 builder.suggest("Male");
                                 builder.suggest("Female");
-                                builder.suggest("Others");
+                                builder.suggest("Other");
                             }
                             return builder.buildFuture();
                         })
@@ -173,7 +173,7 @@ public class CharacterCommand {
     }
 
     private void genderHandler(String gender, Player player) {
-        if (!gender.equals("Male") && !gender.equals("Female") && !gender.equals("Others")) {
+        if (!gender.equals("Male") && !gender.equals("Female") && !gender.equals("Other")) {
             player.sendMessage(ColorParser.of(Translation.of("cards.error.gender")).build());
             return;
         }
