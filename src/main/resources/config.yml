@@ -18,9 +18,6 @@ CardSettings:
   # Defines how long a player's character suffix can be.
   suffixMaxLength: 6
 
-  # Defines how long a player's character gender can be.
-  genderMaxLength: 18
-
   # The minimum age a player's character can make their character
   minimumAge: 14
 

@@ -2,6 +2,7 @@ package io.github.alathra.charactercards.command;
 
 import dev.jorel.commandapi.CommandAPICommand;
 import dev.jorel.commandapi.arguments.*;
+import dev.jorel.commandapi.executors.CommandArguments;
 import io.github.alathra.charactercards.CharacterCards;
 import io.github.alathra.charactercards.config.Settings;
 import io.github.alathra.charactercards.core.Cards;
@@ -70,10 +71,22 @@ public class CharacterCommand {
                 // /char edit <subarg> <value>
                 .withSubcommand(new CommandAPICommand("edit")
                     .withArguments(new StringArgument("subarg")
-                    .replaceSuggestions(ArgumentSuggestions.strings(
-                        "title", "firstname", "lastname", "suffix", "gender", "age", "desc")
-                    ))
-                    .withOptionalArguments(new GreedyStringArgument("value"))
+                        .replaceSuggestions(ArgumentSuggestions.strings(
+                        "title", "firstname", "lastname", "suffix", "gender", "age", "desc"))
+                    )
+                    .withOptionalArguments(new GreedyStringArgument("value")
+                        .replaceSuggestions((info, builder) -> {
+                            CommandArguments subarg = info.previousArgs();
+                            String previousArg = (String) subarg.get("subarg");
+
+                            if ("gender".equalsIgnoreCase(previousArg)) {
+                                builder.suggest("Male");
+                                builder.suggest("Female");
+                                builder.suggest("Others");
+                            }
+                            return builder.buildFuture();
+                        })
+                    )
                     .executesPlayer(((player, commandArguments) -> {
                         if(commandArguments.get("value") != null) {
                             switch ((String) commandArguments.get("subarg")) {
@@ -97,9 +110,9 @@ public class CharacterCommand {
                                     return;
                                 case "desc":
                                     descriptionHandler((String) commandArguments.get("value"), player);
-                    }
-                }
-            })))
+                            }
+                        }
+                    })))
             // if only using /char
             .executesPlayer(((player, commandArguments) -> {
                 Cards.displayHelp(player);
@@ -160,6 +173,11 @@ public class CharacterCommand {
     }
 
     private void genderHandler(String gender, Player player) {
+        if (!gender.equals("Male") && !gender.equals("Female") && !gender.equals("Others")) {
+            player.sendMessage(ColorParser.of(Translation.of("cards.error.gender")).build());
+            return;
+        }
+
         handleStringFieldUpdate(
             player, gender, Settings.getGenderMaxLength(), GENDER,
             p -> p.setCharacterGender(gender),
