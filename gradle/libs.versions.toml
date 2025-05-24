@@ -2,7 +2,7 @@
 crate = "4.0.0-RC.2"
 commandapi = "10.0.0"
 flyway = "11.8.2"
-jooq = "3.20.3"
+jooq = "3.20.4"
 
 [libraries]
 # Core dependencies
@@ -20,7 +20,7 @@ colorparser = "io.github.milkdrinkers:colorparser:3.0.1"
 threadutil-bukkit = "io.github.milkdrinkers:threadutil-bukkit:1.0.0"
 commandapi-shade = { module = "dev.jorel:commandapi-bukkit-shade", version.ref = "commandapi" }
 commandapi-annotations = { module = "dev.jorel:commandapi-annotations", version.ref = "commandapi" }
-triumph-gui = "dev.triumphteam:triumph-gui:3.1.11"
+triumph-gui = "dev.triumphteam:triumph-gui:3.1.12"
 
 # Plugin dependencies
 vault = "com.github.MilkBowl:VaultAPI:1.7.1"
