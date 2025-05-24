@@ -22,6 +22,7 @@ public class V4__example_test extends BaseJavaMigration {
         final DSLContext context = MigrationUtils.getContext(connection); // get migration specific context
 
         // Don't use generated jOOQ results here as they may not exist in future java migrations (jOOQ only generates such from the flyway migration results)
+        /**
         context
             .alterTable(name("some_list"))
             .addColumn(field("advawv", VARCHAR((32))))
@@ -31,5 +32,6 @@ public class V4__example_test extends BaseJavaMigration {
             .alterTable(name("some_list"))
             .addColumn(field("column_name", VARCHAR(32).notNull().defaultValue("default")))
             .execute();
+         **/
     }
 }
