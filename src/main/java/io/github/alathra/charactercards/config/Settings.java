@@ -55,7 +55,14 @@ public class Settings {
             return rawCustomFields; // Return empty map if CardSettings is missing
         }
 
-        Map<?, Map<?, ?>> fieldsMap = (Map<?, Map<?, ?>>) cardSettingsMap.get("customFields");
+        Map<?, Map<?, ?>> fieldsMap;
+
+        try {
+            fieldsMap = (Map<?, Map<?, ?>>) cardSettingsMap.get("customFields");
+        } catch (ClassCastException e) {
+            return rawCustomFields;
+        }
+
         if (fieldsMap == null) {
             return rawCustomFields; // Return empty map if customFields is missing
         }
