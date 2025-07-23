@@ -27,7 +27,7 @@ vault = "com.github.MilkBowl:VaultAPI:1.7.1"
 placeholderapi = "me.clip:placeholderapi:2.11.6"
 
 # Database dependencies
-hikaricp = "com.zaxxer:HikariCP:6.3.0"
+hikaricp = "com.zaxxer:HikariCP:6.3.2"
 flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
 flyway-mysql = { module = "org.flywaydb:flyway-mysql", version.ref = "flyway" }
 jooq = { module = "org.jooq:jooq", version.ref = "jooq" }
