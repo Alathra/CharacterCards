@@ -84,10 +84,22 @@ public class CharacterCommand {
                                 builder.suggest("Female");
                                 builder.suggest("Other");
                             }
+
+                            builder.suggest("clear"); //suggests "clear" so that it's a thing
+
                             return builder.buildFuture();
                         })
                     )
                     .executesPlayer(((player, commandArguments) -> {
+
+                        String field = (String) commandArguments.get("subarg");
+                        String value = (String) commandArguments.get("value");
+
+                        if (value != null && value.equalsIgnoreCase("clear")) {
+                            clearField(field, player);
+                            return;
+                        }
+
                         if(commandArguments.get("value") != null) {
                             switch ((String) commandArguments.get("subarg")) {
                                 case "title":
@@ -212,5 +224,43 @@ public class CharacterCommand {
             p -> p.setCharacterDescription(desc),
             "cards.error.desc"
         );
+    }
+
+    //changes the field to a blank string when "clear" is used as a builder
+    private void clearField(String field, Player player) {
+        PlayerProfile profile = CharacterCards.playerProfiles.get(player.getUniqueId());
+
+        switch (field) {
+            case "title":
+                profile.setCharacterTitle("");
+                Queries.savePlayerProfile(profile, TITLE, player);
+                break;
+            case "firstname":
+                profile.setCharacterFirstName("");
+                Queries.savePlayerProfile(profile, FIRST_NAME, player);
+                break;
+            case "lastname":
+                profile.setCharacterLastName("");
+                Queries.savePlayerProfile(profile, LAST_NAME, player);
+                break;
+            case "suffix":
+                profile.setCharacterSuffix("");
+                Queries.savePlayerProfile(profile, SUFFIX, player);
+                break;
+            case "gender":
+                profile.setCharacterGender("");
+                Queries.savePlayerProfile(profile, GENDER, player);
+                break;
+            case "age":
+                profile.setCharacterAge(0);
+                Queries.savePlayerProfile(profile, AGE, player);
+                break;
+            case "desc":
+                profile.setCharacterDescription("");
+                Queries.savePlayerProfile(profile, DESCRIPTION, player);
+                break;
+        }
+
+        player.sendMessage(ColorParser.of("<green>Field cleared successfully.").build());
     }
 }

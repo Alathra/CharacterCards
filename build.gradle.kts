@@ -25,7 +25,9 @@ java {
 }
 
 repositories {
+    //mavenCentral()
     mavenCentral()
+    maven { url = uri("https://repo.maven.apache.org/maven2") } //I'll try anything at this point please hardcode over here i beg of thee.
 
     maven("https://repo.papermc.io/repository/maven-public/")
     maven("https://mvn-repo.arim.space/lesser-gpl3/")
@@ -181,6 +183,8 @@ tasks {
         // Automatically install dependencies
         downloadPlugins {
 //            modrinth("carbon", "2.1.0-beta.21")
+            hangar("ViaVersion", "5.4.2")
+            hangar("ViaBackwards", "5.4.2")
 //            github("jpenilla", "MiniMOTD", "v2.0.13", "minimotd-bukkit-2.0.13.jar")
 //            hangar("squaremap", "1.2.0")
 //            url("https://download.luckperms.net/1515/bukkit/loader/LuckPerms-Bukkit-5.4.102.jar")
